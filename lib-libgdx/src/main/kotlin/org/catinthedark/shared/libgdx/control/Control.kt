@@ -58,7 +58,7 @@ object Control {
     fun isPressed(vararg buttons: Button): Boolean {
         val controllerPressed = buttons intersect controllerButtons(*buttons)
         val keyboardPressed = buttons intersect keyboardButtons(*buttons)
-        return (controllerPressed union keyboardPressed).isNotEmpty()
+        return (controllerPressed union keyboardPressed).size == buttons.size
     }
 
     private fun controllerButtons(vararg buttons: Button): Set<Button> {

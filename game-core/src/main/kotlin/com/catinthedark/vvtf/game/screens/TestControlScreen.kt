@@ -21,6 +21,9 @@ class TestControlScreen(
 
     override fun run(delta: Float): Unit? {
         log.debug(Control.pressed().toString())
+        if (Control.isPressed(Control.Button.UP)) log.debug("UP")
+        if (Control.isPressed(Control.Button.UP, Control.Button.RIGHT)) log.debug("UP-RIGHT")
+        if (Control.isPressed(Control.Button.UP, Control.Button.BUTTON0)) log.debug("UP-BUTTON0")
         return null
     }
 

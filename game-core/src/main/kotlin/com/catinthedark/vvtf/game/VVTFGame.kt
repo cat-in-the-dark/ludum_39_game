@@ -42,7 +42,6 @@ class VVTFGame : Game() {
         rm.addRoute(title, { pairing })
 //        rm.addRoute(title, { testControl })
         rm.addRoute(pairing, { game })
-//        rm.addRoute(pairing, { testControl })
         rm.start(splash, Unit)
     }
 
