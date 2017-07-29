@@ -24,8 +24,8 @@ object KryoCustomizer {
     }
 
     fun register(kryo: Kryo, packageName: String) {
-        val klasses = Reflections(packageName).getSubTypesOf(Serializable::class.java)
-        register(kryo, klasses.map { it.kotlin })
+        val klasses = Reflections(packageName).getTypesAnnotatedWith(Message::class.java)
+        register(kryo, klasses.sortedBy { it.canonicalName }.map { it.kotlin })
     }
 
     fun buildAndRegister(packageName: String): Kryo {
