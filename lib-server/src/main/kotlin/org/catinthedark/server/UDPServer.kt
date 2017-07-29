@@ -19,7 +19,7 @@ class UDPServer(
         private val kryo: Kryo,
         val host: String = "0.0.0.0",
         val port: Int = 8081,
-        private val invoker: Invoker = SimpleInvoker()
+        private val invoker: Invoker
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
 

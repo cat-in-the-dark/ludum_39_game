@@ -11,7 +11,6 @@ import io.netty.handler.logging.LogLevel
 import io.netty.handler.logging.LoggingHandler
 import org.catinthedark.shared.event_bus.EventBus
 import org.catinthedark.shared.invokers.Invoker
-import org.catinthedark.shared.invokers.SimpleInvoker
 import org.catinthedark.shared.serialization.NettyDecoder
 import org.catinthedark.shared.serialization.NettyEncoder
 import org.slf4j.LoggerFactory
@@ -21,7 +20,7 @@ class TCPServer(
         private val kryo: Kryo,
         val host: String = "0.0.0.0",
         val port: Int = 8080,
-        private val invoker: Invoker = SimpleInvoker()
+        private val invoker: Invoker
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
 
