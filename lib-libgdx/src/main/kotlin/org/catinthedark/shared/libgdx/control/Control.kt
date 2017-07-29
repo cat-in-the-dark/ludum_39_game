@@ -81,6 +81,19 @@ object Control {
             else -> setOf()
         })
 
+        for (button in buttons) {
+            val buttonCode = when(button) {
+                Button.BUTTON0 -> 0
+                Button.BUTTON1 -> 1
+                Button.BUTTON2 -> 2
+                Button.BUTTON3 -> 3
+                else -> -1
+            }
+            if (controller?.getButton(buttonCode) ?: false) {
+                pressedButtons.add(button)
+            }
+        }
+
         return pressedButtons
     }
 
@@ -88,18 +101,20 @@ object Control {
         val pressedButtons = mutableSetOf<Button>()
 
         for (button in buttons) {
-            val keyCode = when (button) {
-                Button.UP -> Input.Keys.W
-                Button.DOWN -> Input.Keys.S
-                Button.LEFT -> Input.Keys.A
-                Button.RIGHT -> Input.Keys.D
-                Button.BUTTON0 -> Input.Keys.SPACE
-                Button.BUTTON1 -> Input.Keys.SHIFT_LEFT
-                Button.BUTTON2 -> Input.Keys.SHIFT_RIGHT
-                Button.BUTTON3 -> Input.Keys.ENTER
+            val keyCodes = when (button) {
+                Button.UP -> setOf(Input.Keys.W, Input.Keys.UP, Input.Keys.DPAD_UP)
+                Button.DOWN -> setOf(Input.Keys.S, Input.Keys.DOWN, Input.Keys.DPAD_DOWN)
+                Button.LEFT -> setOf(Input.Keys.A, Input.Keys.LEFT, Input.Keys.DPAD_LEFT)
+                Button.RIGHT -> setOf(Input.Keys.D, Input.Keys.RIGHT, Input.Keys.DPAD_RIGHT)
+                Button.BUTTON0 -> setOf(Input.Keys.SPACE, Input.Keys.DPAD_CENTER)
+                Button.BUTTON1 -> setOf(Input.Keys.SHIFT_LEFT)
+                Button.BUTTON2 -> setOf(Input.Keys.SHIFT_RIGHT)
+                Button.BUTTON3 -> setOf(Input.Keys.ENTER)
             }
-            if (Gdx.input.isKeyPressed(keyCode)) {
-                pressedButtons.add(button)
+            for (keyCode in keyCodes) {
+                if (Gdx.input.isKeyPressed(keyCode)) {
+                    pressedButtons.add(button)
+                }
             }
         }
 
