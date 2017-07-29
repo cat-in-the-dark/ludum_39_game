@@ -7,7 +7,8 @@ object Const {
 
     object Network {
         object Server {
-
+            val tickRate = 20f
+            val tickDelay = (1000f / tickRate).toLong() // in milliseconds
         }
 
         object Client {
