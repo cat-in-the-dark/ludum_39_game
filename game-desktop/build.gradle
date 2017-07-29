@@ -1,0 +1,24 @@
+def gitCommitCount =
+    Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
+
+version "$gitCommitCount-SNAPSHOT"
+
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+mainClassName = 'com.catinthedark.vvtf.desktop.DesktopLauncher'
+project.ext.assetsDir = new File("../game-core/assets")
+
+sourceSets {
+    main.kotlin.srcDirs = ["src/main/kotlin"]
+    test.kotlin.srcDirs = ["src/test/kotlin"]
+    main.resources.srcDirs = ["../game-core/assets"]
+}
+
+dependencies {
+    compile project(':game-core')
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.6"
+    compile "com.badlogicgames.gdx:gdx-platform:1.9.6:natives-desktop"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

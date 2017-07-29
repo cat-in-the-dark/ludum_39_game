@@ -5,3 +5,5 @@ include ':lib-client'
 include ':lib-shared'
 include ':lib-libgdx'
 
+include ':game-core'
+include ':game-desktop'

@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':lib-shared')
+    compile project(':lib-libgdx')
+    compile project(':lib-client')
+    compile "org.slf4j:slf4j-simple:1.7.7"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.2.0'
+}
