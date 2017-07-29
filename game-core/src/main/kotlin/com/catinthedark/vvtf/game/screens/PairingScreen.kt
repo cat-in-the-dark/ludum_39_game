@@ -1,9 +1,9 @@
 package com.catinthedark.vvtf.game.screens
 
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
 import com.catinthedark.vvtf.game.Const
+import com.catinthedark.vvtf.game.get
 import org.catinthedark.client.OnConnected
 import org.catinthedark.shared.event_bus.BusRegister
 import org.catinthedark.shared.event_bus.Handler
@@ -28,7 +28,7 @@ class PairingScreen(
         if (connected) return pack
 
         stage.batch.managed {
-            it.draw(pack.am.get(Assets.TexturePaths.PAIRING.path, Texture::class.java), 0f, 0f)
+            it.draw(pack.am.get(Assets.TexturePaths.PAIRING), 0f, 0f)
         }
         stage.draw()
         return null

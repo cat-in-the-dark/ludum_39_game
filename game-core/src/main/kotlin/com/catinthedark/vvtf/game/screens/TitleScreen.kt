@@ -3,6 +3,8 @@ package com.catinthedark.vvtf.game.screens
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
+import com.catinthedark.vvtf.game.get
+import com.catinthedark.vvtf.game.getByType
 import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 
@@ -20,7 +22,7 @@ class TitleScreen(
 
     override fun run(delta: Float): Assets.Pack? {
         stage.batch.managed {
-            it.draw(pack.am.get(Assets.TexturePaths.TITLE.path, Texture::class.java), 0f, 0f)
+            it.draw(pack.am.get(Assets.TexturePaths.TITLE), 0f, 0f)
         }
         stage.draw()
         time += delta

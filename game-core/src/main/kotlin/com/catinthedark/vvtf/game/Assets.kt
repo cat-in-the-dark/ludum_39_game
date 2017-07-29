@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 object Assets {
     fun load(): AssetManager {
         return AssetManager().apply {
-            load("fonts/tahoma-10.fnt", BitmapFont::class.java)
-            TexturePaths.values().forEach { load(it.path, Texture::class.java) }
+            load<BitmapFont>("fonts/tahoma-10.fnt")
+            TexturePaths.values().forEach { load<Texture>(it.path) }
         }
     }
 
