@@ -21,7 +21,7 @@ fun onTick(ev: OnTick) {
                 time = Const.time
         )
 
-        EventBus.send("#onTick", Const.gameInvoker, TCPMessage(
+        EventBus.send("#onTick", Const.invoker, TCPMessage(
                 gameState, id
         ))
     }

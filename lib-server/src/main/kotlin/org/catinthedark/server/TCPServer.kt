@@ -26,7 +26,7 @@ class TCPServer(
 
     fun run() {
         val bossGroup = NioEventLoopGroup(1)
-        val workerGroup = NioEventLoopGroup()
+        val workerGroup = NioEventLoopGroup(1)
         try {
             val b = ServerBootstrap()
             b.group(bossGroup, workerGroup)

@@ -36,9 +36,11 @@ class GameScreen(
     }
 
     override fun run(delta: Float): Unit? {
-        val p = pack.playerSkins[state.gameState.me.type] ?: return null
         stage.batch.managed {
-            it.draw(p.texture, state.gameState.me.x, state.gameState.me.y)
+            (state.gameState.players + state.gameState.me).forEach { p ->
+                val t = pack.playerSkins[p.type] ?: return@forEach
+                it.draw(t.texture, p.x, p.y)
+            }
         }
 
         handleKeys()

@@ -7,7 +7,6 @@ import org.catinthedark.shared.event_bus.BusRegister
 import org.catinthedark.shared.event_bus.EventBus
 import org.catinthedark.shared.event_bus.Handler
 import org.catinthedark.shared.invokers.Invoker
-import org.catinthedark.shared.invokers.SimpleInvoker
 import org.slf4j.LoggerFactory
 
 /**
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory
  * You can send a message to other clients by sending [TCPMessage] via [EventBus]
  */
 class GameHandler(
-        private val invoker: Invoker = SimpleInvoker()
+        private val invoker: Invoker
 ) : SimpleChannelInboundHandler<Any>() {
     private val channels: MutableMap<String, Channel> = hashMapOf()
     private val log = LoggerFactory.getLogger(this::class.java)

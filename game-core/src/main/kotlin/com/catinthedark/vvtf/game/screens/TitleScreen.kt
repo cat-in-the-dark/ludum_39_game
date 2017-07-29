@@ -1,10 +1,8 @@
 package com.catinthedark.vvtf.game.screens
 
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
 import com.catinthedark.vvtf.game.get
-import com.catinthedark.vvtf.game.getByType
 import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 
