@@ -17,4 +17,14 @@ object Const {
         val kryo = KryoCustomizer.buildAndRegister("org.catinthedark.vvtf.shared.messages")
         val client = TCPClient(kryo, tickInvoker)
     }
+
+    data class PlayerParams(
+            val speedX: Float,
+            val speedY: Float
+    )
+
+    val playerParams = mapOf(
+            "vampire" to PlayerParams(1.5f, 1f),
+            "peasant" to PlayerParams(1f, 0f)
+    )
 }

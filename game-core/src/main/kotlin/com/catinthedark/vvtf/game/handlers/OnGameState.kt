@@ -11,6 +11,5 @@ private val log = LoggerFactory.getLogger("OnGameState")
 
 @Handler(preHandlerPath = "stage")
 fun onGameState(ev: GameState, state: State, stage: Stage, pack: Assets.Pack) {
-    log.info("$ev")
     state.gameState = ev
 }
