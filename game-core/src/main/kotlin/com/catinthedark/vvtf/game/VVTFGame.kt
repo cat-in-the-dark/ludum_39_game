@@ -52,7 +52,7 @@ class VVTFGame : Game() {
         stage.viewport.apply()
         hudStage.act(Gdx.graphics.deltaTime)
         stage.act(Gdx.graphics.deltaTime)
-        tickInvoker.run(secondsToNanoseconds(Gdx.graphics.deltaTime))
+        tickInvoker.run(secondsToLong(Gdx.graphics.deltaTime))
         rm.run(Gdx.graphics.deltaTime)
         super.render()
     }
@@ -68,7 +68,8 @@ class VVTFGame : Game() {
         super.dispose()
     }
 
-    fun secondsToNanoseconds(delta: Float): Long {
-        return (delta * 1000 * 1000 * 1000).toLong()
-    }
+    /**
+     * To milliseconds
+     */
+    private fun secondsToLong(delta: Float): Long = (delta * 1000).toLong()
 }

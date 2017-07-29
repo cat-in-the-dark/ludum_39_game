@@ -12,7 +12,7 @@ object Const {
         }
 
         object Client {
-            val tickRate = 10f
+            val tickRate = 40f
             val tickDelay = (1000f / tickRate).toLong() // in milliseconds
         }
     }
