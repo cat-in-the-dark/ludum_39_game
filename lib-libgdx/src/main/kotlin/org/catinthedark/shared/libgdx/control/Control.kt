@@ -81,6 +81,18 @@ object Control {
             else -> setOf()
         })
 
+        val axis0 = controller?.getAxis(0)
+        val axis1 = controller?.getAxis(1)
+        for (button in buttons) {
+            when (button) {
+                Button.LEFT -> if (axis0 != null && axis0 < -0.5) pressedButtons.add(button)
+                Button.RIGHT -> if (axis0 != null && axis0 > 0.5) pressedButtons.add(button)
+                Button.UP -> if (axis1 != null && axis1 < -0.5) pressedButtons.add(button)
+                Button.DOWN -> if (axis1 != null && axis1 > 0.5) pressedButtons.add(button)
+                else -> {}
+            }
+        }
+
         for (button in buttons) {
             val buttonCode = when(button) {
                 Button.BUTTON0 -> 0
