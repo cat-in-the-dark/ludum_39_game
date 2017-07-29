@@ -1,13 +1,11 @@
 package com.catinthedark.vvtf.game
 
 import org.catinthedark.client.TCPClient
-import org.catinthedark.shared.invokers.SimpleInvoker
 import org.catinthedark.shared.invokers.TickInvoker
 import org.catinthedark.shared.serialization.KryoCustomizer
 
 object Const {
     val tickInvoker = TickInvoker() // UI executor
-    val threadInvoker = SimpleInvoker() // async executor
 
     object Screen {
         val WIDTH = 1024

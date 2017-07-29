@@ -7,16 +7,38 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 object Assets {
     fun load(): AssetManager {
         return AssetManager().apply {
-            val textures = listOf(Names.LOGO, Names.TITLE, Names.PAIRING)
-
             load("fonts/tahoma-10.fnt", BitmapFont::class.java)
-            textures.forEach { load(it, Texture::class.java) }
+            TexturePaths.values().forEach { load(it.path, Texture::class.java) }
         }
     }
 
-    object Names {
-        val LOGO = "textures/logo.png"
-        val TITLE = "textures/logo.png"
-        val PAIRING = "textures/pairing.png"
+    fun pack(am: AssetManager): Pack {
+        val vampire = PlayerSkin(am.get(TexturePaths.VAMPIRE.path, Texture::class.java))
+        val peasant = PlayerSkin(am.get(TexturePaths.PEASANT.path, Texture::class.java))
+
+        return Pack(
+                am,
+                mapOf(
+                        "vampire" to vampire,
+                        "peasant" to peasant
+                )
+        )
     }
+
+    enum class TexturePaths(val path: String) {
+        LOGO("textures/logo.png"),
+        TITLE("textures/logo.png"),
+        PAIRING("textures/pairing.png"),
+        VAMPIRE("textures/vampire.png"),
+        PEASANT("textures/peasant.png")
+    }
+
+    data class PlayerSkin(
+            val texture: Texture
+    )
+
+    data class Pack(
+            val am: AssetManager,
+            val playerSkins: Map<String, PlayerSkin>
+    )
 }

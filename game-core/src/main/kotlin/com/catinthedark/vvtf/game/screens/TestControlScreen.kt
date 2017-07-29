@@ -2,14 +2,12 @@ package com.catinthedark.vvtf.game.screens
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.scenes.scene2d.Stage
-import org.catinthedark.shared.invokers.TickInvoker
 import org.catinthedark.shared.libgdx.control.Control
 import org.catinthedark.shared.route_machine.YieldUnit
 import org.slf4j.LoggerFactory
 
 class TestControlScreen(
-        private val stage: Stage,
-        private val tickInvoker: TickInvoker
+        private val stage: Stage
 ) : YieldUnit<AssetManager, Unit> {
     private lateinit var am: AssetManager
     private val log = LoggerFactory.getLogger(this.javaClass)

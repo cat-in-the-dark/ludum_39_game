@@ -1,6 +1,5 @@
 package com.catinthedark.vvtf.game.screens
 
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
@@ -15,21 +14,21 @@ class PairingScreen(
         private val stage: Stage,
         private val host: String = "0.0.0.0",
         private val port: Int = 8080
-) : YieldUnit<AssetManager, AssetManager> {
-    private lateinit var am: AssetManager
+) : YieldUnit<Assets.Pack, Assets.Pack> {
+    private lateinit var pack: Assets.Pack
     private var connected = false
 
-    override fun onActivate(data: AssetManager) {
+    override fun onActivate(data: Assets.Pack) {
         BusRegister.register(this)
-        am = data
+        pack = data
         Const.Network.client.connect(host, port)
     }
 
-    override fun run(delta: Float): AssetManager? {
-        if (connected) return am
+    override fun run(delta: Float): Assets.Pack? {
+        if (connected) return pack
 
         stage.batch.managed {
-            it.draw(am.get(Assets.Names.PAIRING, Texture::class.java), 0f, 0f)
+            it.draw(pack.am.get(Assets.TexturePaths.PAIRING.path, Texture::class.java), 0f, 0f)
         }
         stage.draw()
         return null

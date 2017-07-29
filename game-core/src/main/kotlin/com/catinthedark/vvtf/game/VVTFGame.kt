@@ -34,9 +34,9 @@ class VVTFGame : Game() {
 
         val splash = SplashScreen(hudStage)
         val title = TitleScreen(hudStage)
-        val game = GameScreen(stage, hudStage, tickInvoker)
+        val game = GameScreen(stage, hudStage)
         val pairing = PairingScreen(stage)
-        val testControl = TestControlScreen(stage, tickInvoker)
+        val testControl = TestControlScreen(stage)
 
         rm.addRoute(splash, { title })
         rm.addRoute(title, { pairing })
@@ -64,7 +64,6 @@ class VVTFGame : Game() {
     }
 
     override fun dispose() {
-        Const.threadInvoker.shutdown()
         Const.tickInvoker.shutdown()
         super.dispose()
     }
