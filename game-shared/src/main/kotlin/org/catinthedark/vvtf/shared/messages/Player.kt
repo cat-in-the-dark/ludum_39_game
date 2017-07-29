@@ -4,11 +4,11 @@ import org.catinthedark.shared.serialization.Message
 
 @Message
 data class Player(
-        val id: String,
-        val name: String,
-        val type: String, // "peasant" or "vampire"
-        var x: Float,
-        var y: Float,
-        var angle: Float,
-        var state: String
+        val id: String = "",
+        val name: String = "",
+        val type: String = "ghost", // "peasant" or "vampire"
+        var x: Float = 0f,
+        var y: Float = 0f,
+        var angle: Float = 0f,
+        var state: String = "idle"
 )

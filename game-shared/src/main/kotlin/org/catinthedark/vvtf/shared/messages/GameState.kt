@@ -4,7 +4,7 @@ import org.catinthedark.shared.serialization.Message
 
 @Message
 data class GameState(
-        val me: Player,
-        val players: List<Player>,
-        val time: Long
+        val me: Player = Player(),
+        val players: List<Player> = emptyList(),
+        val time: Long = 0L
 )
