@@ -9,11 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FillViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.catinthedark.vvtf.game.Const.tickInvoker
-import com.catinthedark.vvtf.game.screens.GameScreen
-import com.catinthedark.vvtf.game.screens.PairingScreen
-import com.catinthedark.vvtf.game.screens.SplashScreen
-import com.catinthedark.vvtf.game.screens.TitleScreen
-import com.google.common.eventbus.EventBus
+import com.catinthedark.vvtf.game.screens.*
 import org.catinthedark.shared.event_bus.BusRegister
 import org.catinthedark.shared.route_machine.RouteMachine
 
@@ -40,10 +36,13 @@ class VVTFGame : Game() {
         val title = TitleScreen(hudStage)
         val game = GameScreen(stage, hudStage, tickInvoker)
         val pairing = PairingScreen(stage)
+        val testControl = TestControlScreen(stage, tickInvoker)
 
         rm.addRoute(splash, { title })
         rm.addRoute(title, { pairing })
+//        rm.addRoute(title, { testControl })
         rm.addRoute(pairing, { game })
+//        rm.addRoute(pairing, { testControl })
         rm.start(splash, Unit)
     }
 
