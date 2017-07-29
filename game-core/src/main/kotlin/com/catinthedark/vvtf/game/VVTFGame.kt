@@ -11,13 +11,17 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.catinthedark.vvtf.game.screens.GameScreen
 import com.catinthedark.vvtf.game.screens.SplashScreen
 import com.catinthedark.vvtf.game.screens.TitleScreen
+import org.catinthedark.shared.invokers.SimpleInvoker
+import org.catinthedark.shared.invokers.TickInvoker
 import org.catinthedark.shared.route_machine.RouteMachine
 
-class VVTFGame: Game() {
+class VVTFGame : Game() {
     private val rm = RouteMachine()
 
     private lateinit var stage: Stage
     private lateinit var hudStage: Stage
+    private val tickInvoker = TickInvoker() // UI executor
+    private val threadInvoker = SimpleInvoker() // async executor
 
     override fun create() {
         stage = Stage(FillViewport(
@@ -32,7 +36,7 @@ class VVTFGame: Game() {
 
         val splash = SplashScreen(hudStage)
         val title = TitleScreen(hudStage)
-        val game = GameScreen(stage, hudStage)
+        val game = GameScreen(stage, hudStage, tickInvoker)
 
         rm.addRoute(splash, { title })
         rm.addRoute(title, { game })
