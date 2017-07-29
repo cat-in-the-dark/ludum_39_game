@@ -11,7 +11,7 @@ class Main {
         fun main(args: Array<String>) {
             BusRegister.register("org.catinthedark.vvtf.server.handlers")
             val kryo = KryoCustomizer.buildAndRegister("org.catinthedark.vvtf.shared.messages")
-            val server = TCPServer(kryo, "0.0.0.0", 8080, invoker)
+            val server = TCPServer(kryo, Const.Network.host, Const.Network.port, invoker)
             server.run() // it locks thread. Do not place code after it
             // Nothing to do here!!!
         }

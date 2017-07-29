@@ -20,15 +20,9 @@ class GameScreen(
     }
 
     override fun run(delta: Float): Unit? {
-        tickInvoker.run(secondsToNanoseconds(delta))
         return null
     }
 
     override fun onExit() {
-        tickInvoker.shutdown()
-    }
-
-    fun secondsToNanoseconds(delta: Float): Long {
-        return (delta * 1000 * 1000 * 1000).toLong()
     }
 }

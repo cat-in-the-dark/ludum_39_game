@@ -10,4 +10,9 @@ object Const {
     val gameInvoker: DeferrableInvoker = TickInvoker()
 
     val clients: MutableMap<String, SocketAddress> = mutableMapOf()
+
+    object Network {
+        val port = 8080
+        val host = "0.0.0.0"
+    }
 }

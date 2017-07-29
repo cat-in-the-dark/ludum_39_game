@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FillViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.catinthedark.vvtf.game.Const.tickInvoker
 import com.catinthedark.vvtf.game.screens.GameScreen
+import com.catinthedark.vvtf.game.screens.PairingScreen
 import com.catinthedark.vvtf.game.screens.SplashScreen
 import com.catinthedark.vvtf.game.screens.TitleScreen
-import org.catinthedark.shared.invokers.SimpleInvoker
-import org.catinthedark.shared.invokers.TickInvoker
+import com.google.common.eventbus.EventBus
+import org.catinthedark.shared.event_bus.BusRegister
 import org.catinthedark.shared.route_machine.RouteMachine
 
 class VVTFGame : Game() {
@@ -20,10 +22,10 @@ class VVTFGame : Game() {
 
     private lateinit var stage: Stage
     private lateinit var hudStage: Stage
-    private val tickInvoker = TickInvoker() // UI executor
-    private val threadInvoker = SimpleInvoker() // async executor
 
     override fun create() {
+        BusRegister.register("com.catinthedark.vvtf.game.handlers")
+
         stage = Stage(FillViewport(
                 Const.Screen.WIDTH / Const.Screen.ZOOM,
                 Const.Screen.HEIGHT / Const.Screen.ZOOM,
@@ -37,9 +39,11 @@ class VVTFGame : Game() {
         val splash = SplashScreen(hudStage)
         val title = TitleScreen(hudStage)
         val game = GameScreen(stage, hudStage, tickInvoker)
+        val pairing = PairingScreen(stage)
 
         rm.addRoute(splash, { title })
-        rm.addRoute(title, { game })
+        rm.addRoute(title, { pairing })
+        rm.addRoute(pairing, { game })
         rm.start(splash, Unit)
     }
 
@@ -50,6 +54,7 @@ class VVTFGame : Game() {
         stage.viewport.apply()
         hudStage.act(Gdx.graphics.deltaTime)
         stage.act(Gdx.graphics.deltaTime)
+        tickInvoker.run(secondsToNanoseconds(Gdx.graphics.deltaTime))
         rm.run(Gdx.graphics.deltaTime)
         super.render()
     }
@@ -61,6 +66,12 @@ class VVTFGame : Game() {
     }
 
     override fun dispose() {
+        Const.threadInvoker.shutdown()
+        Const.tickInvoker.shutdown()
         super.dispose()
+    }
+
+    fun secondsToNanoseconds(delta: Float): Long {
+        return (delta * 1000 * 1000 * 1000).toLong()
     }
 }

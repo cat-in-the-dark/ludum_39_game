@@ -8,5 +8,5 @@ private val log = LoggerFactory.getLogger("onTick")
 
 @Handler
 fun onTick(ev: OnTick) {
-    log.info("$ev")
+
 }
