@@ -23,10 +23,14 @@ object KryoCustomizer {
         }
     }
 
-    fun buildAndRegister(packageName: String): Kryo {
+    fun register(kryo: Kryo, packageName: String) {
         val klasses = Reflections(packageName).getSubTypesOf(Serializable::class.java)
-        val kryo = Kryo()
         register(kryo, klasses.map { it.kotlin })
+    }
+
+    fun buildAndRegister(packageName: String): Kryo {
+        val kryo = Kryo()
+        register(kryo, packageName)
         return kryo
     }
 }
