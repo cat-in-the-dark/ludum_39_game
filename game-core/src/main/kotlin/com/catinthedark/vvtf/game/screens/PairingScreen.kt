@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
 import com.catinthedark.vvtf.game.Const
+import org.catinthedark.client.OnConnected
+import org.catinthedark.shared.event_bus.BusRegister
+import org.catinthedark.shared.event_bus.Handler
 import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 
@@ -14,13 +17,17 @@ class PairingScreen(
         private val port: Int = 8080
 ) : YieldUnit<AssetManager, AssetManager> {
     private lateinit var am: AssetManager
+    private var connected = false
 
     override fun onActivate(data: AssetManager) {
+        BusRegister.register(this)
         am = data
         Const.Network.client.connect(host, port)
     }
 
     override fun run(delta: Float): AssetManager? {
+        if (connected) return am
+
         stage.batch.managed {
             it.draw(am.get(Assets.Names.PAIRING, Texture::class.java), 0f, 0f)
         }
@@ -29,6 +36,12 @@ class PairingScreen(
     }
 
     override fun onExit() {
+        BusRegister.unregister(this)
+        connected = false
+    }
 
+    @Handler
+    fun onConnected(ev: OnConnected) {
+        connected = true
     }
 }
