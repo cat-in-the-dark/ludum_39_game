@@ -3,6 +3,7 @@ package org.catinthedark.vvtf.server.handlers
 import org.catinthedark.vvtf.shared.Const
 import org.catinthedark.vvtf.shared.messages.Player
 import org.catinthedark.vvtf.shared.models.PlayerParams
+import org.catinthedark.vvtf.shared.toSeconds
 import org.slf4j.LoggerFactory
 import java.lang.Math.abs
 import java.lang.Math.min
@@ -19,8 +20,8 @@ fun handleAttack(player: Player, params: PlayerParams, delta: Long) {
     for (target in targets) {
         target.state = Const.PlayerState.underAttack.name
         when(player.type) {
-            "vampire" -> vampireAttack(player, target)
-            "peasant" -> peasantAttack(player, target)
+            "vampire" -> vampireAttack(player, params, delta, target)
+            "peasant" -> peasantAttack(player, params, delta, target)
         }
         if (target.power == 0L) {
             target.state = Const.PlayerState.dead.name
@@ -29,20 +30,22 @@ fun handleAttack(player: Player, params: PlayerParams, delta: Long) {
     }
 }
 
-fun vampireAttack(vampire: Player, victim: Player) {
-    val powerTransfer = min(victim.power, vampire.power / 2)    // TODO?
+private fun vampireAttack(vampire: Player, params: PlayerParams, delta: Long, victim: Player) {
+    val powerTransfer = min(victim.power,
+            (vampire.power * params.attackPowerRatio * delta.toSeconds()).toLong())
     vampire.power += powerTransfer
     victim.power -= powerTransfer
-    log.info("Vampire {} bit {} for {}", vampire.name, victim.name, powerTransfer)
+    log.info("Vampire '{}' bit '{}' for {}", vampire.name, victim.name, powerTransfer)
 }
 
-fun peasantAttack(peasant: Player, target: Player) {
-    val powerTransfer = min(target.power, peasant.power)        // TODO?
+private fun peasantAttack(peasant: Player, params: PlayerParams, delta: Long, target: Player) {
+    val powerTransfer = min(target.power,
+            (peasant.power * params.attackPowerRatio * delta.toSeconds()).toLong())
     target.power -= powerTransfer
-    log.info("Peasant {} pricked {} for {}", peasant.name, target.name, powerTransfer)
+    log.info("Peasant '{}' pricked '{}' for {}", peasant.name, target.name, powerTransfer)
 }
 
-fun findAttackTargets(player: Player, params: PlayerParams): List<Player> {
+private fun findAttackTargets(player: Player, params: PlayerParams): List<Player> {
     val targets = mutableListOf<Player>()
 
     for ((id, otherPlayer) in org.catinthedark.vvtf.server.Const.players) {
@@ -58,7 +61,7 @@ fun findAttackTargets(player: Player, params: PlayerParams): List<Player> {
 
         val distanceX = (otherPlayer.x - player.x) * directionSign
         val distanceY = (otherPlayer.y - player.y)
-        if (distanceX >= 0 && distanceX <= params.attackDistanceX
+        if (distanceX >= 0 && distanceX <= params.attackDistanceX   // implicit min distance is 0
                 && abs(distanceY) <= params.attackDistanceY) {
             targets.add(otherPlayer)
         }
