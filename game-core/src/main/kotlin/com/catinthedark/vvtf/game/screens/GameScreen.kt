@@ -197,6 +197,7 @@ class GameScreen(
         ui.forEach { it.run(delta) }
 
         handleKeys(delta)
+        handleSounds(delta)
 
         return null
     }
@@ -252,6 +253,22 @@ class GameScreen(
             state.gameState.me.canAttack = false
             EventBus.send("#handleKeys.attack", Const.tickInvoker, TCPMessage(Attack()))
         })
+
+        Control.onPressed(Control.Button.BUTTON2, {
+            if (!state.gameState.me.canTeleport) return@onPressed
+            log.info("TELEPORT")
+            state.gameState.me.canTeleport = false
+            pack.playerSounds[state.gameState.me.type]?.run?.play()
+        })
+    }
+
+    private fun handleSounds(delta: Float) {
+        val walkMe = pack.playerSounds[state.gameState.me.type]?.walk
+        if (state.gameState.me.state == PlayerState.walking.name) {
+            walkMe?.play()
+        } else {
+            walkMe?.pause()
+        }
     }
 }
 

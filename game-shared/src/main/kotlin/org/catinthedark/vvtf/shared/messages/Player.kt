@@ -3,6 +3,7 @@ package org.catinthedark.vvtf.shared.messages
 import org.catinthedark.shared.serialization.Message
 import org.catinthedark.vvtf.shared.Const
 import org.catinthedark.vvtf.shared.Const.random
+import org.catinthedark.vvtf.shared.models.playerParams
 
 @Message
 data class Player(
@@ -21,7 +22,8 @@ data class Player(
         var canAttack: Boolean = false,
         var isAttacking: Boolean = false,
         var power: Float = 100f,
-        var isDead: Boolean = false
+        var isDead: Boolean = false,
+        var canTeleport: Boolean = false
 )
 
 fun Player.isJumping(): Boolean {
@@ -47,7 +49,8 @@ fun Vampire(id: String) = Player(
         canJump = true,
         jumpingTime = 0,
         canAttack = true,
-        power = 200f
+        power = 200f,
+        canTeleport = playerParams["vampire"]?.canTeleport ?: false
 )
 
 fun Peasant(id: String) = Player(
@@ -61,7 +64,8 @@ fun Peasant(id: String) = Player(
         canJump = false,
         jumpingTime = 0,
         canAttack = true,
-        power = 100f
+        power = 100f,
+        canTeleport = playerParams["peasant"]?.canTeleport ?: false
 )
 
 

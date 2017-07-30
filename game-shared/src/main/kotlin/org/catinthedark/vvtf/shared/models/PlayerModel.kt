@@ -14,7 +14,8 @@ data class PlayerParams(
         val attackDistanceY: Float,
         val maxPower: Float,
         val attackPowerRatio: Float,    // the ratio of attacker's power to be taken from the target per second
-        val powerLossInTime: Float      // power loss per second
+        val powerLossInTime: Float,      // power loss per second
+        val canTeleport: Boolean
 )
 
 val playerParams = mapOf(
@@ -30,7 +31,8 @@ val playerParams = mapOf(
                 attackDistanceY = 64f,
                 maxPower = 200f,
                 attackPowerRatio = 0.5f,
-                powerLossInTime = 4f
+                powerLossInTime = 4f,
+                canTeleport = true
         ),
         "peasant" to PlayerParams(
                 speedX = 800f,
@@ -44,6 +46,7 @@ val playerParams = mapOf(
                 attackDistanceY = 96f,
                 maxPower = 100f,
                 attackPowerRatio = 0.5f,
-                powerLossInTime = 0f
+                powerLossInTime = 0f,
+                canTeleport = false
         )
 )
