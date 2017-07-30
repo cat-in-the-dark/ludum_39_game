@@ -12,6 +12,8 @@ import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 import org.catinthedark.vvtf.shared.Const.Network.Client
 import org.catinthedark.vvtf.shared.Const.PlayerState
+import org.catinthedark.vvtf.shared.messages.Jump
+import org.catinthedark.vvtf.shared.models.playerParams
 import org.slf4j.LoggerFactory
 
 class GameScreen(
@@ -32,8 +34,6 @@ class GameScreen(
         Const.tickInvoker.periodic({
             EventBus.send("#onActivate.periodic", Const.tickInvoker, TCPMessage(state.currentMovement))
             state.currentMovement.deltaX = 0f
-            state.currentMovement.deltaY = 0f
-            state.currentMovement.state = PlayerState.idle.name
         }, Client.tickDelay)
     }
 
@@ -57,7 +57,7 @@ class GameScreen(
     private fun handleKeys(delta: Float) {
 //        log.debug(delta.toString())
 
-        val playerParams = Const.playerParams[state.gameState.me.type] ?: return
+        val playerParams = playerParams[state.gameState.me.type] ?: return
 
         Control.onPressed(Control.Button.RIGHT, {
             state.currentMovement.deltaX += delta * playerParams.speedX
@@ -70,11 +70,13 @@ class GameScreen(
         })
 
         Control.onPressed(Control.Button.UP, {
-            state.currentMovement.deltaY += delta * playerParams.speedY
-        })
+            if (!state.gameState.me.canJump) return@onPressed
 
-        Control.onPressed(Control.Button.DOWN, {
-            state.currentMovement.deltaY -= delta * playerParams.speedY
+            log.info("JUMP!")
+            state.gameState.me.canJump = false // to prevent often sending to the server
+            EventBus.send("GameScreen#handleKeys", Const.tickInvoker, TCPMessage(
+                    Jump()
+            ))
         })
 
         Control.onPressed(Control.Button.BUTTON0, {

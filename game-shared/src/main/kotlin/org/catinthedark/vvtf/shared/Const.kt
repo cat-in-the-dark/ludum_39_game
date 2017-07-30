@@ -1,6 +1,10 @@
 package org.catinthedark.vvtf.shared
 
+import java.util.*
+
 object Const {
+    val random = Random()
+
     object Balance {
 
     }

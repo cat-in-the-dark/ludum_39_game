@@ -4,8 +4,9 @@ import org.catinthedark.server.OnClientConnected
 import org.catinthedark.shared.event_bus.Handler
 import org.catinthedark.vvtf.server.Const.clients
 import org.catinthedark.vvtf.server.Const.players
-import org.catinthedark.vvtf.shared.Const
+import org.catinthedark.vvtf.shared.messages.Peasant
 import org.catinthedark.vvtf.shared.messages.Player
+import org.catinthedark.vvtf.shared.messages.Vampire
 import org.slf4j.LoggerFactory
 
 private val log = LoggerFactory.getLogger("onClientConnected")
@@ -21,32 +22,8 @@ fun onClientConnected(ev: OnClientConnected) {
 
 fun createPlayer(id: String): Player {
     return if (players.isEmpty()) {
-        Player(
-                id = id,
-                angle = 0f,
-                name = getVampireName(),
-                type = "vampire",
-                state = Const.PlayerState.idle.name,
-                x = 0f,
-                y = 0f
-        )
+        Vampire(id)
     } else {
-        Player(
-                id = id,
-                angle = 0f,
-                name = getPeasantName(),
-                type = "peasant",
-                state = Const.PlayerState.idle.name,
-                x = 0f,
-                y = 0f
-        )
+        Peasant(id)
     }
-}
-
-fun getVampireName(): String {
-    return "Vampire"
-}
-
-fun getPeasantName(): String {
-    return "Peasant"
 }

@@ -14,9 +14,9 @@ private val log = LoggerFactory.getLogger("onServerStarted")
 fun onServerStarted(ev: ServerStarted) {
     log.info("Server started: $ev")
 
-    var lastTick = System.nanoTime()
+    var lastTick = System.currentTimeMillis()
     invoker.periodic({
-        val currentTime = System.nanoTime()
+        val currentTime = System.currentTimeMillis()
         EventBus.send("#serverTick", invoker, OnTick(currentTime - lastTick))
         lastTick = currentTime
     }, tickDelay)
