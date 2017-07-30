@@ -20,8 +20,8 @@ object Assets {
     }
 
     fun pack(am: AssetManager): Pack {
-        val vampire = PlayerSkin(am.get(TexturePaths.VAMPIRE))
-        val peasant = PlayerSkin(am.get(TexturePaths.PEASANT))
+        val vampire = PlayerSkin(am.get(TexturePaths.VAMPIRE), am.get(TexturePaths.VAMPIRE_IDLE), am.get(TexturePaths.VAMPIRE_ATTACK))
+        val peasant = PlayerSkin(am.get(TexturePaths.PEASANT), am.get(TexturePaths.PEASANT_IDLE), am.get(TexturePaths.PEASANT_ATTACK))
 
         val vampireSound = SoundPack(
             walk = am.get(MusicPaths.WALK),
@@ -54,7 +54,11 @@ object Assets {
         TITLE("textures/logo.png"),
         PAIRING("textures/pairing.png"),
         VAMPIRE("textures/vampire.png"),
+        VAMPIRE_IDLE("textures/vampire_idle.png"),
+        VAMPIRE_ATTACK("textures/vampire_attack.png"),
         PEASANT("textures/peasant.png"),
+        PEASANT_IDLE("textures/peasant_idle.png"),
+        PEASANT_ATTACK("textures/vampire_attack.png"),
         DEMO("textures/demo_cast.png"),
         WHITE("textures/white.png"),
         BACKGROUND1("textures/fon1.jpg")
@@ -80,17 +84,21 @@ object Assets {
     )
 
     data class PlayerSkin(
-        val texture: Texture
+        val texture: Texture,
+        val idleTexture: Texture,
+        val attackTexture: Texture
     ) {
         private val frames = TextureRegion.split(texture, 128, 128)
-        private val idle = AnimationUtils.loopingAnimation(Const.UI.animationSpeed, frames,
-            0 to 0, 0 to 1, 0 to 2)
+        private val idleFrames = TextureRegion.split(idleTexture, 128, 128)
+        private val attackFrames = TextureRegion.split(attackTexture, 128, 128)
+        private val idle = AnimationUtils.loopingAnimation(Const.UI.animationSpeed, idleFrames,
+            0 to 0, 1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0)
         private val walking = AnimationUtils.loopingAnimation(Const.UI.animationSpeed, frames,
             1 to 0, 1 to 1, 1 to 2, 1 to 3, 1 to 4)
         private val jumping = AnimationUtils.loopingAnimation(Const.UI.animationSpeed, frames,
             2 to 0, 2 to 1, 2 to 2, 2 to 3, 2 to 4)
-        private val attack = AnimationUtils.loopingAnimation(Const.UI.animationSpeed, frames,
-            3 to 0, 3 to 1, 3 to 2, 3 to 3, 3 to 4)
+        private val attack = AnimationUtils.loopingAnimation(Const.UI.animationSpeed, attackFrames,
+            0 to 0, 1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0)
 
         private var animationCounter = 0f
 

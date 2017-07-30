@@ -90,9 +90,6 @@ class GameScreen(
         sceneBatch = SpriteBatch()
         fboBatch = SpriteBatch()
 
-        println(SpriteBatch().shader.vertexShaderSource)
-        println(SpriteBatch().shader.fragmentShaderSource)
-
         camera.position.x = 512f
         camera.position.y = 320f
         camera.update()
@@ -119,22 +116,17 @@ class GameScreen(
         val ppos = Vector2(state.gameState.me.x, state.gameState.me.y)
         val LEFT_DIST = 300f;
         val RIGHT_DIST = 30f;
-        // println("dist = "  + (ppos.x - npos.x) )
         if (ppos.x - npos.x > LEFT_DIST && npos.x < 3200f) {
             camera.position.x = npos.x + 512f + (ppos.x - npos.x - LEFT_DIST)
             //camera.position.y = ppos.y + 320f
             camera.update()
             tiledMapRenderer.setView(camera)
-            //  println(camera.position.x)
         }
-
-        println("dist = " + (ppos.x - npos.x))
 
         if (ppos.x - npos.x < RIGHT_DIST && npos.x > 0f) {
             camera.position.x = npos.x + 512f + (ppos.x - npos.x - RIGHT_DIST)
             camera.update()
             tiledMapRenderer.setView(camera)
-            //  println(camera.position.x)
         }
 
         val scam = OrthographicCamera(1024f, 640f)
