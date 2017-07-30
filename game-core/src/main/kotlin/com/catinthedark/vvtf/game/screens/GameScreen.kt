@@ -34,7 +34,6 @@ class GameScreen(
             EventBus.send("#onActivate.periodic", Const.tickInvoker, TCPMessage(state.currentMovement))
             state.currentMovement.deltaX = 0f
             state.currentMovement.deltaY = 0f
-            state.currentMovement.state = PlayerState.idle.name
         }, Client.tickDelay)
     }
 
@@ -89,6 +88,12 @@ class GameScreen(
                 deltaY -= delta * playerParams.speedY
             }
         })
+
+        with(state.currentMovement) {
+            if (deltaX == 0f && deltaY == 0f) {
+                state = PlayerState.idle.name
+            }
+        }
 
         Control.onPressed(Control.Button.BUTTON0, {
             state.currentMovement.state = PlayerState.attack.name   //?
