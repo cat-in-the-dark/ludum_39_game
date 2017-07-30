@@ -36,26 +36,5 @@ fun onTick(ev: OnTick) {
 
 private fun handlePlayer(player: Player, params: PlayerParams, delta: Long) {
     handleJumping(player, params, delta)
-}
-
-private fun handleJumping(player: Player, params: PlayerParams, delta: Long) {
-    if (player.state != PlayerState.jumping.name) return
-    player.jumpingTime += delta
-
-    when {
-        player.jumpingTime >= params.jumpTime -> {
-            player.state = PlayerState.idle.name
-            player.jumpingTime = 0
-            player.y = player.lastY
-        }
-
-        player.jumpingTime >= params.jumpTime / 2 -> {
-            player.y -= params.jumpSpeed * delta.toSeconds()
-            if (player.y <= player.lastY) player.y = player.lastY // TODO: detect collisions
-        }
-
-        else -> {
-            player.y += params.jumpSpeed * delta.toSeconds()
-        }
-    }
+    handleMoving(player, params, delta)
 }

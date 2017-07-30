@@ -12,6 +12,7 @@ import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 import org.catinthedark.vvtf.shared.Const.Network.Client
 import org.catinthedark.vvtf.shared.Const.PlayerState
+import org.catinthedark.vvtf.shared.messages.Attack
 import org.catinthedark.vvtf.shared.messages.Jump
 import org.catinthedark.vvtf.shared.models.playerParams
 import org.slf4j.LoggerFactory
@@ -41,7 +42,7 @@ class GameScreen(
         stage.batch.managed {
             (state.gameState.players + state.gameState.me).forEach { p ->
                 val t = pack.playerSkins[p.type] ?: return@forEach
-                it.draw(t.texture, p.x, p.y)
+                it.draw(t.texture(p.state, delta), p.x, p.y)
             }
         }
 
@@ -60,13 +61,20 @@ class GameScreen(
         val playerParams = playerParams[state.gameState.me.type] ?: return
 
         Control.onPressed(Control.Button.RIGHT, {
-            state.currentMovement.deltaX += delta * playerParams.speedX
-            state.currentMovement.angle = 0f
+            with(state.currentMovement) {
+                deltaX += delta * playerParams.speedX
+                angle = 0f
+                state = PlayerState.walking.name    //?
+            }
+
         })
 
         Control.onPressed(Control.Button.LEFT, {
-            state.currentMovement.deltaX -= delta * playerParams.speedX
-            state.currentMovement.angle = 180f
+            with(state.currentMovement) {
+                deltaX -= delta * playerParams.speedX
+                angle = 180f
+                state = PlayerState.walking.name    //?
+            }
         })
 
         Control.onPressed(Control.Button.UP, {
@@ -79,8 +87,15 @@ class GameScreen(
             ))
         })
 
+        with(state.currentMovement) {
+            if (deltaX == 0f && deltaY == 0f) {
+                state = PlayerState.idle.name
+            }
+        }
+
         Control.onPressed(Control.Button.BUTTON0, {
-            state.currentMovement.state = PlayerState.attack.name
+            state.currentMovement.state = PlayerState.attack.name   //?
+            EventBus.send("#handleKeys.attack", Const.tickInvoker, TCPMessage(Attack()))
         })
     }
 }

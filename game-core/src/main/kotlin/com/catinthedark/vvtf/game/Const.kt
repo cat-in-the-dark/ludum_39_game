@@ -17,4 +17,8 @@ object Const {
         val kryo = KryoCustomizer.buildAndRegister("org.catinthedark.vvtf.shared.messages")
         val client = TCPClient(kryo, tickInvoker)
     }
+
+    object UI {
+        val animationSpeed = 0.2f
+    }
 }
