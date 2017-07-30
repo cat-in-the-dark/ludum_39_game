@@ -20,6 +20,10 @@ class VVTFGame : Game() {
     private lateinit var hudStage: Stage
 
     override fun create() {
+        createProduction()
+    }
+
+    fun createProduction() {
         BusRegister.register("com.catinthedark.vvtf.game.handlers")
 
         stage = Stage(FillViewport(
@@ -45,12 +49,31 @@ class VVTFGame : Game() {
         rm.start(splash, Unit)
     }
 
+    fun createTestUI() {
+        stage = Stage(FillViewport(
+                Const.Screen.WIDTH / Const.Screen.ZOOM,
+                Const.Screen.HEIGHT / Const.Screen.ZOOM,
+                OrthographicCamera()), SpriteBatch())
+
+        hudStage = Stage(FitViewport(
+                Const.Screen.WIDTH / Const.Screen.ZOOM,
+                Const.Screen.HEIGHT / Const.Screen.ZOOM,
+                OrthographicCamera()), SpriteBatch())
+
+        val splash = SplashScreen(hudStage)
+        val uiTest = TestUIScreen(stage, hudStage)
+
+        rm.addRoute(splash, { uiTest })
+        rm.start(splash, Unit)
+    }
+
     override fun render() {
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
         hudStage.viewport.apply(true)
         stage.viewport.apply()
         hudStage.act(Gdx.graphics.deltaTime)
+        hudStage.draw()
         stage.act(Gdx.graphics.deltaTime)
         tickInvoker.run(secondsToLong(Gdx.graphics.deltaTime))
         rm.run(Gdx.graphics.deltaTime)

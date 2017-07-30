@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
 import com.catinthedark.vvtf.game.Const
 import com.catinthedark.vvtf.game.State
+import com.catinthedark.vvtf.game.screens.views.UITime
 import org.catinthedark.client.TCPMessage
 import org.catinthedark.shared.event_bus.BusRegister
 import org.catinthedark.shared.event_bus.EventBus
@@ -24,6 +25,7 @@ class GameScreen(
     private lateinit var pack: Assets.Pack
     private val log = LoggerFactory.getLogger(this.javaClass)
     private val state = State()
+    private val uiTime = UITime(hudStage, state)
 
     override fun onActivate(data: Assets.Pack) {
         log.info("GameScreen started")
@@ -31,6 +33,7 @@ class GameScreen(
             return@registerPreHandler Pair(message, listOf(state, stage, pack))
         })
         pack = data
+        uiTime.onActivate(Unit)
 
         Const.tickInvoker.periodic({
             EventBus.send("#onActivate.periodic", Const.tickInvoker, TCPMessage(state.currentMovement))
@@ -45,6 +48,7 @@ class GameScreen(
                 it.draw(t.texture(p.state, delta), p.x, p.y)
             }
         }
+        uiTime.run(delta)
 
         handleKeys(delta)
 
@@ -53,6 +57,7 @@ class GameScreen(
 
     override fun onExit() {
         BusRegister.unRegisterPreHandler("stage")
+        uiTime.onExit()
     }
 
     private fun handleKeys(delta: Float) {
