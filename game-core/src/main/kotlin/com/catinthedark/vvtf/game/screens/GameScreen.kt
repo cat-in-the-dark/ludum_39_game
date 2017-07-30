@@ -123,10 +123,11 @@ class GameScreen(
         val npos = normalizedCamPos(camera.position.x, camera.position.x)
         val ppos = Vector2(state.gameState.me.x, state.gameState.me.y)
         val LEFT_DIST = 300f;
+        val RIGHT_DIST = 30f;
         // println("dist = "  + (ppos.x - npos.x) )
-        if (ppos.x - npos.x > LEFT_DIST) {
+        if (ppos.x - npos.x > LEFT_DIST && npos.x < 3200f) {
             camera.position.x = npos.x + 512f + (ppos.x - npos.x - LEFT_DIST)
-            camera.position.y = ppos.y + 320f
+            //camera.position.y = ppos.y + 320f
             camera.update()
             tiledMapRenderer.setView(camera)
             //  println(camera.position.x)
@@ -134,9 +135,8 @@ class GameScreen(
 
         println("dist = " + (ppos.x - npos.x))
 
-        if (ppos.x - npos.x < -LEFT_DIST) {
-            camera.position.x = npos.x + 512f + (npos.x - ppos.x - LEFT_DIST)
-            camera.position.y = ppos.y + 320f
+        if (ppos.x - npos.x < RIGHT_DIST && npos.x > 0f) {
+            camera.position.x = npos.x + 512f + (ppos.x - npos.x - RIGHT_DIST)
             camera.update()
             tiledMapRenderer.setView(camera)
             //  println(camera.position.x)
