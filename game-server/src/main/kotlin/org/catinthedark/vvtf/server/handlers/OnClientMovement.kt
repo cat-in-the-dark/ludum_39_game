@@ -11,7 +11,6 @@ private val log = LoggerFactory.getLogger("onClientMovement")
 fun onClientMovement(ev: Movement, id: String) {
     val player = Const.players[id] ?: return
     with(player) {
-        x += ev.deltaX // TODO: validate speed
-        angle = ev.angle
+        x += ev.deltaX // TODO: validate speed?
     }
 }

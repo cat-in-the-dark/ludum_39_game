@@ -15,10 +15,23 @@ data class Player(
         var state: String = Const.PlayerState.idle.name,
         var jumpingTime: Long = 0,
         var canJump: Boolean = false,
+        var lastX: Float = 0f,
         var lastY: Float = 0f,
         var isJumping: Boolean = false,
         var canAttack: Boolean = false
 )
+
+fun Player.isJumping(): Boolean {
+    return isJumping
+}
+
+fun Player.isAttacking(): Boolean {
+    return state == Const.PlayerState.attack.name
+}
+
+fun Player.isMoving(): Boolean {
+    return x != lastX
+}
 
 fun Vampire(id: String) = Player(
         id = id,
