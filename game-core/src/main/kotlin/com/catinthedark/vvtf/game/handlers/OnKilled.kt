@@ -11,11 +11,18 @@ import org.catinthedark.vvtf.shared.toMillis
 
 @Handler(preHandlerPath = "stage")
 fun onKilled(ev: Kill, state: State, stage: Stage, pack: Assets.Pack) {
-    // TODO: play sound
-    val n = Notification("${ev.byName} KILL ${ev.victimName}")
+    val n = Notification("${ev.aggressorName} KILL ${ev.victimName}")
     state.notifications.add(n)
 
     Const.tickInvoker.defer({
         state.notifications.remove(n)
     }, 6f.toMillis())
+
+    val victim = if (state.gameState.me.id == ev.victimId) {
+        state.gameState.me
+    } else {
+        state.gameState.players.firstOrNull { it.id == ev.victimId }
+    } ?: return
+
+    pack.playerSounds[victim.type]?.dead?.play()
 }

@@ -1,7 +1,12 @@
 package org.catinthedark.vvtf.server.handlers
 
+import org.catinthedark.server.TCPMessage
+import org.catinthedark.shared.event_bus.EventBus
 import org.catinthedark.vvtf.shared.Const
+import org.catinthedark.vvtf.server.Const.invoker
+import org.catinthedark.vvtf.shared.messages.Touched
 import org.catinthedark.vvtf.shared.messages.Player
+import org.catinthedark.vvtf.shared.messages.direction
 import org.catinthedark.vvtf.shared.models.PlayerParams
 import org.catinthedark.vvtf.shared.toSeconds
 import org.slf4j.LoggerFactory
@@ -36,6 +41,10 @@ private fun vampireAttack(vampire: Player, params: PlayerParams, delta: Long, vi
     vampire.power += powerTransfer
     victim.power -= powerTransfer
     log.info("Vampire '{}' bit '{}' for {}", vampire.name, victim.name, powerTransfer)
+    EventBus.send("HandleAttack#vampireAttack", invoker, TCPMessage(Touched(
+        victimId = victim.id,
+        aggressorId = vampire.id
+    )))
 }
 
 private fun peasantAttack(peasant: Player, params: PlayerParams, delta: Long, target: Player) {
@@ -53,13 +62,7 @@ private fun findAttackTargets(player: Player, params: PlayerParams): List<Player
             continue
         }
 
-        val directionSign = when(player.angle) {
-            0f -> +1
-            180f -> -1
-            else -> 0
-        }
-
-        val distanceX = (otherPlayer.x - player.x) * directionSign
+        val distanceX = (otherPlayer.x - player.x) * player.direction()
         val distanceY = (otherPlayer.y - player.y)
         if (distanceX >= 0 && distanceX <= params.attackDistanceX   // implicit min distance is 0
                 && abs(distanceY) <= params.attackDistanceY) {

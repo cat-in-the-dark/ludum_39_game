@@ -28,6 +28,7 @@ import org.catinthedark.vvtf.shared.Const.Network.Client
 import org.catinthedark.vvtf.shared.Const.PlayerState
 import org.catinthedark.vvtf.shared.messages.Attack
 import org.catinthedark.vvtf.shared.messages.Jump
+import org.catinthedark.vvtf.shared.messages.Teleport
 import org.catinthedark.vvtf.shared.models.playerParams
 import org.slf4j.LoggerFactory
 
@@ -289,6 +290,7 @@ class GameScreen(
             log.info("TELEPORT")
             state.gameState.me.canTeleport = false
             pack.playerSounds[state.gameState.me.type]?.run?.play()
+            EventBus.send("#handleKeys.teleport", Const.tickInvoker, TCPMessage(Teleport()))
         })
     }
 

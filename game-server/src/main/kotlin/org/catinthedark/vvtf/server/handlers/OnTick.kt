@@ -37,4 +37,5 @@ private fun handlePlayer(player: Player, params: PlayerParams, delta: Long) {
     handleMoving(player, params, delta)
     handleAttack(player, params, delta)
     handlePowerLoss(player, params, delta)
+    handleTeleporting(player, params, delta)
 }

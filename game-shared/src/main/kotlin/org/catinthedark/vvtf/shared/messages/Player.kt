@@ -23,7 +23,9 @@ data class Player(
         var isAttacking: Boolean = false,
         var power: Float = 100f,
         var isDead: Boolean = false,
-        var canTeleport: Boolean = false
+        var canTeleport: Boolean = false,
+        var isTeleporting: Boolean = false,
+        var teleportingTime: Long = 0
 )
 
 fun Player.isJumping(): Boolean {
@@ -36,6 +38,14 @@ fun Player.isAttacking(): Boolean {
 
 fun Player.isMoving(): Boolean {
     return x != lastX
+}
+
+fun Player.direction(): Float {
+    return when(this.angle) {
+        0f -> +1f
+        180f -> -1f
+        else -> 0f
+    }
 }
 
 fun Vampire(id: String) = Player(

@@ -36,7 +36,7 @@ class TestUIScreen(
         var i = 0
         Const.tickInvoker.periodic({
             i += 1
-            onKilled(Kill("", "$i - Vampire", "Peasant"), state, hudStage, pack)
+            onKilled(Kill("", "","$i - Vampire", "Peasant"), state, hudStage, pack)
         }, 2f.toMillis())
     }
 

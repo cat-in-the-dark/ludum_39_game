@@ -15,7 +15,7 @@ fun handleMoving(player: Player, params: PlayerParams, delta: Long) {
         if (x < lastX) {
             angle = 180f
         }
-        if (!isJumping() && !isAttacking()) {
+        if (!isJumping() && !isAttacking() && !isTeleporting) {
             if (isMoving()) {
                 state = Const.PlayerState.walking.name
             } else {
