@@ -31,8 +31,8 @@ class GameScreen(
 
         Const.tickInvoker.periodic({
             EventBus.send("#onActivate.periodic", Const.tickInvoker, TCPMessage(state.currentMovement))
-            state.currentMovement.speedX = 0f
-            state.currentMovement.speedY = 0f
+            state.currentMovement.deltaX = 0f
+            state.currentMovement.deltaY = 0f
             state.currentMovement.state = PlayerState.idle.name
         }, Client.tickDelay)
     }
@@ -45,7 +45,7 @@ class GameScreen(
             }
         }
 
-        handleKeys()
+        handleKeys(delta)
 
         return null
     }
@@ -54,23 +54,27 @@ class GameScreen(
         BusRegister.unRegisterPreHandler("stage")
     }
 
-    private fun handleKeys() {
+    private fun handleKeys(delta: Float) {
+//        log.debug(delta.toString())
+
+        val playerParams = Const.playerParams[state.gameState.me.type] ?: return
+
         Control.onPressed(Control.Button.RIGHT, {
-            state.currentMovement.speedX += Const.playerParams[state.gameState.me.type]?.speedX ?: 0f
+            state.currentMovement.deltaX += delta * playerParams.speedX
             state.currentMovement.angle = 0f
         })
 
         Control.onPressed(Control.Button.LEFT, {
-            state.currentMovement.speedX -= Const.playerParams[state.gameState.me.type]?.speedX ?: 0f
+            state.currentMovement.deltaX -= delta * playerParams.speedX
             state.currentMovement.angle = 180f
         })
 
         Control.onPressed(Control.Button.UP, {
-            state.currentMovement.speedY += Const.playerParams[state.gameState.me.type]?.speedY ?: 0f
+            state.currentMovement.deltaY += delta * playerParams.speedY
         })
 
         Control.onPressed(Control.Button.DOWN, {
-            state.currentMovement.speedY -= Const.playerParams[state.gameState.me.type]?.speedY ?: 0f
+            state.currentMovement.deltaY -= delta * playerParams.speedY
         })
 
         Control.onPressed(Control.Button.BUTTON0, {

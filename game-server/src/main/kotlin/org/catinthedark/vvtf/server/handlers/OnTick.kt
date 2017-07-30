@@ -20,7 +20,6 @@ fun onTick(ev: OnTick) {
                 players = Const.players.values - player,
                 time = Const.time
         )
-
         EventBus.send("#onTick", Const.invoker, TCPMessage(
                 gameState, id
         ))

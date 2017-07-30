@@ -19,12 +19,12 @@ object Const {
     }
 
     data class PlayerParams(
-            val speedX: Float,
+            val speedX: Float,      // in pixels/sec
             val speedY: Float
     )
 
     val playerParams = mapOf(
-            "vampire" to PlayerParams(15f, 15f),
-            "peasant" to PlayerParams(10f, 10f)
+            "vampire" to PlayerParams(800f, 800f),
+            "peasant" to PlayerParams(600f, 600f)
     )
 }
