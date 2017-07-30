@@ -41,8 +41,12 @@ class GameScreen(
     override fun run(delta: Float): Unit? {
         stage.batch.managed {
             (state.gameState.players + state.gameState.me).forEach { p ->
-                val t = pack.playerSkins[p.type] ?: return@forEach
-                it.draw(t.texture(p.state, delta), p.x, p.y)
+                val skin = pack.playerSkins[p.type] ?: return@forEach
+                val texture = skin.texture(p.state, delta)
+                if ((p.angle == 180f) xor texture.isFlipX) {
+                    texture.flip(true, false)
+                }
+                it.draw(texture, p.x, p.y)
             }
         }
 
