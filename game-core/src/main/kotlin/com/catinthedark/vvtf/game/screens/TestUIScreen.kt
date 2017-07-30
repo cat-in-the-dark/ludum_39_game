@@ -25,12 +25,14 @@ class TestUIScreen(
     override fun onActivate(data: Assets.Pack) {
         log.info("TestIUScreen started")
         pack = data
+        state.gameState = GameState(Player(type = "vampire"), emptyList(), time)
         ui.forEach { it.onActivate(Unit) }
     }
 
     override fun run(delta: Float): Unit? {
         time += delta.toMillis()
-        state.gameState = GameState(Player(), emptyList(), time)
+        state.gameState.me.power -= 1
+        if (state.gameState.me.power <= 0) state.gameState.me.power = 100
 
 
         ui.forEach { it.run(delta) }
