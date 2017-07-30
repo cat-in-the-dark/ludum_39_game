@@ -1,31 +1,30 @@
 package com.catinthedark.vvtf.game.screens
 
-import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
+import com.catinthedark.vvtf.game.get
 import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 
 class TitleScreen(
         private val stage: Stage
-) : YieldUnit<AssetManager, AssetManager> {
-    private lateinit var am: AssetManager
+) : YieldUnit<Assets.Pack, Assets.Pack> {
+    private lateinit var pack: Assets.Pack
 
     private var time = 0f
 
-    override fun onActivate(data: AssetManager) {
-        am = data
+    override fun onActivate(data: Assets.Pack) {
+        pack = data
         time = 0f
     }
 
-    override fun run(delta: Float): AssetManager? {
+    override fun run(delta: Float): Assets.Pack? {
         stage.batch.managed {
-            it.draw(am.get(Assets.Names.TITLE, Texture::class.java), 0f, 0f)
+            it.draw(pack.am.get(Assets.TexturePaths.TITLE), 0f, 0f)
         }
         stage.draw()
         time += delta
-        if (time > 0.5) return am
+        if (time > 0.5) return pack
         return null
     }
 

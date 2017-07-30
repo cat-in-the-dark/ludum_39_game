@@ -8,18 +8,25 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FillViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
-import com.catinthedark.vvtf.game.screens.GameScreen
-import com.catinthedark.vvtf.game.screens.SplashScreen
-import com.catinthedark.vvtf.game.screens.TitleScreen
+import com.catinthedark.vvtf.game.Const.tickInvoker
+import com.catinthedark.vvtf.game.screens.*
+import org.catinthedark.shared.event_bus.BusRegister
 import org.catinthedark.shared.route_machine.RouteMachine
 
-class VVTFGame: Game() {
+class VVTFGame : Game() {
     private val rm = RouteMachine()
 
     private lateinit var stage: Stage
     private lateinit var hudStage: Stage
 
     override fun create() {
+        createProduction()
+//        createTestUI()
+    }
+
+    fun createProduction() {
+        BusRegister.register("com.catinthedark.vvtf.game.handlers")
+
         stage = Stage(FillViewport(
                 Const.Screen.WIDTH / Const.Screen.ZOOM,
                 Const.Screen.HEIGHT / Const.Screen.ZOOM,
@@ -33,9 +40,31 @@ class VVTFGame: Game() {
         val splash = SplashScreen(hudStage)
         val title = TitleScreen(hudStage)
         val game = GameScreen(stage, hudStage)
+        val pairing = PairingScreen(stage)
+        val testControl = TestControlScreen(stage)
 
         rm.addRoute(splash, { title })
-        rm.addRoute(title, { game })
+        rm.addRoute(title, { pairing })
+//        rm.addRoute(title, { testControl })
+        rm.addRoute(pairing, { game })
+        rm.start(splash, Unit)
+    }
+
+    fun createTestUI() {
+        stage = Stage(FillViewport(
+                Const.Screen.WIDTH / Const.Screen.ZOOM,
+                Const.Screen.HEIGHT / Const.Screen.ZOOM,
+                OrthographicCamera()), SpriteBatch())
+
+        hudStage = Stage(FitViewport(
+                Const.Screen.WIDTH / Const.Screen.ZOOM,
+                Const.Screen.HEIGHT / Const.Screen.ZOOM,
+                OrthographicCamera()), SpriteBatch())
+
+        val splash = SplashScreen(hudStage)
+        val uiTest = TestUIScreen(stage, hudStage)
+
+        rm.addRoute(splash, { uiTest })
         rm.start(splash, Unit)
     }
 
@@ -45,7 +74,9 @@ class VVTFGame: Game() {
         hudStage.viewport.apply(true)
         stage.viewport.apply()
         hudStage.act(Gdx.graphics.deltaTime)
+        hudStage.draw()
         stage.act(Gdx.graphics.deltaTime)
+        tickInvoker.run(secondsToLong(Gdx.graphics.deltaTime))
         rm.run(Gdx.graphics.deltaTime)
         super.render()
     }
@@ -57,6 +88,12 @@ class VVTFGame: Game() {
     }
 
     override fun dispose() {
+        Const.tickInvoker.shutdown()
         super.dispose()
     }
+
+    /**
+     * To milliseconds
+     */
+    private fun secondsToLong(delta: Float): Long = (delta * 1000).toLong()
 }
