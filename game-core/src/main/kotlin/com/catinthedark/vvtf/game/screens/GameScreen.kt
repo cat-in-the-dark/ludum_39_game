@@ -1,14 +1,10 @@
 package com.catinthedark.vvtf.game.screens
 
-import com.badlogic.gdx.graphics.OrthographicCamera
-
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.graphics.g3d.Shader
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -16,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
-
 import com.catinthedark.vvtf.game.Const
 import com.catinthedark.vvtf.game.State
 import com.catinthedark.vvtf.game.screens.views.UINotifications
@@ -26,7 +21,6 @@ import org.catinthedark.client.TCPMessage
 import org.catinthedark.shared.event_bus.BusRegister
 import org.catinthedark.shared.event_bus.EventBus
 import org.catinthedark.shared.libgdx.control.Control
-
 import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 import org.catinthedark.vvtf.shared.Const.Network.Client
@@ -189,7 +183,9 @@ class GameScreen(
         shader.setUniformi("u_textureCast", 1)
         shader.setUniformi("u_textureBack", 2)
         shader.setUniform2fv("screenSize", floatArrayOf(1024f, 640f), 0, 2)
-        shader.setUniform2fv("mousePos", floatArrayOf(Gdx.input.x.toFloat(), Gdx.input.y.toFloat()), 0, 2)
+        shader.setUniform2fv("mousePos",
+            floatArrayOf(state.gameState.me.x + 64f, 640f - state.gameState.me.y - 64f), 0, 2)
+            // TODO: recalculate player position to screen coordinates
         fboTex.texture.bind(0)
         fboBatch.draw(fboTex, 0f, 0f, 1024f, 640f)
         fboBatch.end();
