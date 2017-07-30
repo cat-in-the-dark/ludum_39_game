@@ -22,7 +22,10 @@ object Const {
     object UI {
         val animationSpeed = 0.2f
 
-        val powerBarPos = Vector2(78f, 603f)
+        val powerBarPos = Vector2(78f, 600f)
         val powerBarWh = Vector2(252f, 25f)
+
+        val timerPos = Vector2(450f, 600f)
+        val notificationsPos = Vector2(650f, 600f)
     }
 }

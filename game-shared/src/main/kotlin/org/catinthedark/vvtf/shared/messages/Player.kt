@@ -20,7 +20,8 @@ data class Player(
         var isJumping: Boolean = false,
         var canAttack: Boolean = false,
         var isAttacking: Boolean = false,
-        var power: Float = 100f
+        var power: Float = 100f,
+        var isDead: Boolean = false
 )
 
 fun Player.isJumping(): Boolean {
