@@ -16,10 +16,12 @@ fun onClientAttack(ev: Attack, id: String) {
     if (!player.canAttack) return
 
     player.canAttack = false
+    player.isAttacking = true
     player.state = PlayerState.attack.name
 
     Const.gameInvoker.defer({
         player.canAttack = true
+        player.isAttacking = false
         player.state = PlayerState.idle.name
         log.info("Reset ATTACK for $player")
     }, params.attackCoolDown)

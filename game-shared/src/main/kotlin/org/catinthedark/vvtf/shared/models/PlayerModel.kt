@@ -9,26 +9,35 @@ data class PlayerParams(
         val jumpSpeed: Float,
         val jumpTime: Long,
         val jumpCoolDown: Long,
-        val attackCoolDown: Long
+        val attackCoolDown: Long,
+        val attackDistanceX: Float,
+        val attackDistanceY: Float,
+        val maxPower: Long
 )
 
 val playerParams = mapOf(
         "vampire" to PlayerParams(
-                800f,
-                0f,
-                true,
-                1200f,
-                0.4f.toMillis(),
-                0.6f.toMillis(),
-                1f.toMillis()
+                speedX = 800f,
+                speedY = 0f,
+                canJump = true,
+                jumpSpeed = 1200f,
+                jumpTime = 0.4f.toMillis(),
+                jumpCoolDown = 0.6f.toMillis(),
+                attackCoolDown = 1f.toMillis(),
+                attackDistanceX = 64f,
+                attackDistanceY = 64f,
+                maxPower = 200
         ),
         "peasant" to PlayerParams(
-                600f,
-                0f,
-                false,
-                0f,
-                0f.toMillis(),
-                100000f.toMillis(),
-                1f.toMillis()
+                speedX = 600f,
+                speedY = 0f,
+                canJump = false,
+                jumpSpeed = 0f,
+                jumpTime = 0f.toMillis(),
+                jumpCoolDown = 100000f.toMillis(),
+                attackCoolDown = 1f.toMillis(),
+                attackDistanceX = 128f,
+                attackDistanceY = 96f,
+                maxPower = 100
         )
 )

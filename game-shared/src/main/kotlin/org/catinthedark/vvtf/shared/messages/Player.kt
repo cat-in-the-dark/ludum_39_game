@@ -11,14 +11,16 @@ data class Player(
         val type: String = "ghost", // "peasant" or "vampire"
         var x: Float = 0f,
         var y: Float = 0f,
+        var lastX: Float = 0f,
+        var lastY: Float = 0f,
         var angle: Float = 0f,
         var state: String = Const.PlayerState.idle.name,
         var jumpingTime: Long = 0,
         var canJump: Boolean = false,
-        var lastX: Float = 0f,
-        var lastY: Float = 0f,
         var isJumping: Boolean = false,
-        var canAttack: Boolean = false
+        var canAttack: Boolean = false,
+        var isAttacking: Boolean = false,
+        var power: Long = 100
 )
 
 fun Player.isJumping(): Boolean {
@@ -43,7 +45,8 @@ fun Vampire(id: String) = Player(
         y = 0f,
         canJump = true,
         jumpingTime = 0,
-        canAttack = true
+        canAttack = true,
+        power = 200
 )
 
 fun Peasant(id: String) = Player(
@@ -56,7 +59,8 @@ fun Peasant(id: String) = Player(
         y = 0f,
         canJump = false,
         jumpingTime = 0,
-        canAttack = true
+        canAttack = true,
+        power = 100
 )
 
 

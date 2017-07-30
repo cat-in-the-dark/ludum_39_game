@@ -22,7 +22,7 @@ object Const {
     }
 
     enum class PlayerState {
-        idle, walking, running, jumping, climbing, attack, dead
+        idle, walking, running, jumping, climbing, attack, underAttack, dead
     }
 
 }

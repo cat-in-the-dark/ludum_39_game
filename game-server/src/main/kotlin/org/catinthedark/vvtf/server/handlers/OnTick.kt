@@ -37,4 +37,5 @@ fun onTick(ev: OnTick) {
 private fun handlePlayer(player: Player, params: PlayerParams, delta: Long) {
     handleJumping(player, params, delta)
     handleMoving(player, params, delta)
+    handleAttack(player, params, delta)
 }
