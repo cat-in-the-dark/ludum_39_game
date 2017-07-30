@@ -22,7 +22,7 @@ data class Player(
 )
 
 fun Player.isJumping(): Boolean {
-    return jumpingTime > 0L
+    return isJumping
 }
 
 fun Player.isAttacking(): Boolean {
