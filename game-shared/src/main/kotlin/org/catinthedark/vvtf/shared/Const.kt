@@ -16,4 +16,9 @@ object Const {
             val tickDelay = (1000f / tickRate).toLong() // in milliseconds
         }
     }
+
+    enum class PlayerState {
+        idle, walking, running, jumping, climbing, attack, dead
+    }
+
 }

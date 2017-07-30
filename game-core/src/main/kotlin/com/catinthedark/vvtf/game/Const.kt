@@ -24,7 +24,7 @@ object Const {
     )
 
     val playerParams = mapOf(
-            "vampire" to PlayerParams(1.5f, 1f),
-            "peasant" to PlayerParams(1f, 0f)
+            "vampire" to PlayerParams(15f, 15f),
+            "peasant" to PlayerParams(10f, 10f)
     )
 }

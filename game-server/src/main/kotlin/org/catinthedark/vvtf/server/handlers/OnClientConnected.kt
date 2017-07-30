@@ -4,6 +4,7 @@ import org.catinthedark.server.OnClientConnected
 import org.catinthedark.shared.event_bus.Handler
 import org.catinthedark.vvtf.server.Const.clients
 import org.catinthedark.vvtf.server.Const.players
+import org.catinthedark.vvtf.shared.Const
 import org.catinthedark.vvtf.shared.messages.Player
 import org.slf4j.LoggerFactory
 
@@ -25,7 +26,7 @@ fun createPlayer(id: String): Player {
                 angle = 0f,
                 name = getVampireName(),
                 type = "vampire",
-                state = "idle",
+                state = Const.PlayerState.idle.name,
                 x = 0f,
                 y = 0f
         )
@@ -35,7 +36,7 @@ fun createPlayer(id: String): Player {
                 angle = 0f,
                 name = getPeasantName(),
                 type = "peasant",
-                state = "idle",
+                state = Const.PlayerState.idle.name,
                 x = 0f,
                 y = 0f
         )

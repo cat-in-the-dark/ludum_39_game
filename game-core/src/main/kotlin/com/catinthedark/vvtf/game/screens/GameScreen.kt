@@ -11,6 +11,7 @@ import org.catinthedark.shared.libgdx.control.Control
 import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 import org.catinthedark.vvtf.shared.Const.Network.Client
+import org.catinthedark.vvtf.shared.Const.PlayerState
 import org.slf4j.LoggerFactory
 
 class GameScreen(
@@ -32,6 +33,7 @@ class GameScreen(
             EventBus.send("#onActivate.periodic", Const.tickInvoker, TCPMessage(state.currentMovement))
             state.currentMovement.speedX = 0f
             state.currentMovement.speedY = 0f
+            state.currentMovement.state = PlayerState.idle.name
         }, Client.tickDelay)
     }
 
@@ -53,16 +55,34 @@ class GameScreen(
     }
 
     private fun handleKeys() {
-        Control.onPressed({
+        Control.onPressed(Control.Button.RIGHT, {
             state.currentMovement.speedX += Const.playerParams[state.gameState.me.type]?.speedX ?: 0f
-        }, Control.Button.RIGHT)
+            state.currentMovement.angle = 0f
+        })
 
-        Control.onPressed({
+        Control.onPressed(Control.Button.LEFT, {
             state.currentMovement.speedX -= Const.playerParams[state.gameState.me.type]?.speedX ?: 0f
-        }, Control.Button.LEFT)
+            state.currentMovement.angle = 180f
+        })
+
+        Control.onPressed(Control.Button.UP, {
+            state.currentMovement.speedY += Const.playerParams[state.gameState.me.type]?.speedY ?: 0f
+        })
+
+        Control.onPressed(Control.Button.DOWN, {
+            state.currentMovement.speedY -= Const.playerParams[state.gameState.me.type]?.speedY ?: 0f
+        })
+
+        Control.onPressed(Control.Button.BUTTON0, {
+            state.currentMovement.state = PlayerState.attack.name
+        })
     }
 }
 
 fun Control.onPressed(onTrue: () -> Unit, vararg buttons: Control.Button) {
     if (isPressed(*buttons)) onTrue()
+}
+
+fun Control.onPressed(button: Control.Button, onTrue: () -> Unit) {
+    if (isPressed(button)) onTrue()
 }
