@@ -19,7 +19,7 @@ data class PlayerParams(
 
 val playerParams = mapOf(
         "vampire" to PlayerParams(
-                speedX = 800f,
+                speedX = 1200f,
                 speedY = 0f,
                 canJump = true,
                 jumpSpeed = 1200f,
@@ -33,7 +33,7 @@ val playerParams = mapOf(
                 powerLossInTime = 4f
         ),
         "peasant" to PlayerParams(
-                speedX = 600f,
+                speedX = 800f,
                 speedY = 0f,
                 canJump = false,
                 jumpSpeed = 0f,
