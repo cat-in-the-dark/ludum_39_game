@@ -219,7 +219,7 @@ class GameScreen(
         shader.setUniformi("u_textureBack", 2)
         shader.setUniform2fv("screenSize", floatArrayOf(1024f, 640f), 0, 2)
         shader.setUniform2fv("mousePos",
-            floatArrayOf(state.gameState.me.x + 64f, 640f - state.gameState.me.y - 64f), 0, 2)
+            floatArrayOf(state.gameState.me.x + 64f - scam.position.x + 512f, 640f - state.gameState.me.y - 64f), 0, 2)
             // TODO: recalculate player position to screen coordinates
         fboTex.texture.bind(0)
         fboBatch.draw(fboTex, 0f, 0f, 1024f, 640f)
