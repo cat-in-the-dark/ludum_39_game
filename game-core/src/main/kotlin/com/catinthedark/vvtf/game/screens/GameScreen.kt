@@ -42,7 +42,7 @@ class GameScreen(
         stage.batch.managed {
             (state.gameState.players + state.gameState.me).forEach { p ->
                 val t = pack.playerSkins[p.type] ?: return@forEach
-                it.draw(t.texture, p.x, p.y)
+                it.draw(t.texture(p.state, delta), p.x, p.y)
             }
         }
 

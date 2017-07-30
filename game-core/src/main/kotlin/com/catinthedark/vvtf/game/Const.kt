@@ -27,4 +27,9 @@ object Const {
             "vampire" to PlayerParams(800f, 800f),
             "peasant" to PlayerParams(600f, 600f)
     )
+
+    object UI {
+        val animationSpeed = 0.2f
+    }
+
 }
