@@ -32,7 +32,7 @@ class TestUIScreen(
     override fun run(delta: Float): Unit? {
         time += delta.toMillis()
         state.gameState.me.power -= 1
-        if (state.gameState.me.power <= 0) state.gameState.me.power = 100
+        if (state.gameState.me.power <= 0) state.gameState.me.power = 100f
 
 
         ui.forEach { it.run(delta) }

@@ -20,7 +20,7 @@ data class Player(
         var isJumping: Boolean = false,
         var canAttack: Boolean = false,
         var isAttacking: Boolean = false,
-        var power: Long = 100
+        var power: Float = 100f
 )
 
 fun Player.isJumping(): Boolean {
@@ -46,7 +46,7 @@ fun Vampire(id: String) = Player(
         canJump = true,
         jumpingTime = 0,
         canAttack = true,
-        power = 200
+        power = 200f
 )
 
 fun Peasant(id: String) = Player(
@@ -60,7 +60,7 @@ fun Peasant(id: String) = Player(
         canJump = false,
         jumpingTime = 0,
         canAttack = true,
-        power = 100
+        power = 100f
 )
 
 
