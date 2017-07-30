@@ -1,22 +1,18 @@
 package com.catinthedark.vvtf.game.screens
 
-import com.badlogic.gdx.graphics.OrthographicCamera
-
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.graphics.g3d.Shader
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.catinthedark.vvtf.game.Assets
-
 import com.catinthedark.vvtf.game.Const
 import com.catinthedark.vvtf.game.State
 import com.catinthedark.vvtf.game.screens.views.UINotifications
@@ -26,7 +22,6 @@ import org.catinthedark.client.TCPMessage
 import org.catinthedark.shared.event_bus.BusRegister
 import org.catinthedark.shared.event_bus.EventBus
 import org.catinthedark.shared.libgdx.control.Control
-
 import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 import org.catinthedark.vvtf.shared.Const.Network.Client
@@ -56,6 +51,7 @@ class GameScreen(
     private val tiledMapRenderer = OrthogonalTiledMapRenderer(tiledMap)
     private lateinit var shapeRender: ShapeRenderer
     private lateinit var fboWall: FrameBuffer
+    val camera = OrthographicCamera(1024f, 640f)
 
     override fun onActivate(data: Assets.Pack) {
         log.info("GameScreen started")
@@ -96,8 +92,8 @@ class GameScreen(
         println(SpriteBatch().shader.vertexShaderSource)
         println(SpriteBatch().shader.fragmentShaderSource)
 
-        val camera = OrthographicCamera(1024f, 640f)
-        camera.translate(512f, 320f)
+        camera.position.x = 512f
+        camera.position.y = 320f
         camera.update()
         tiledMapRenderer.setView(camera)
         shapeRender = ShapeRenderer()
@@ -108,19 +104,49 @@ class GameScreen(
         //shapeRender.transformMatrix = cam2.combined
 
         fboWall = FrameBuffer(Pixmap.Format.RGBA8888, 1024, 640, false)
-
+        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
     }
 
+    fun normalizedCamPos(x: Float, y: Float): Vector2 {
+        return Vector2(x - 512f, y - 320f)
+    }
 
     override fun run(delta: Float): Unit? {
         // val gl = Gdx.graphics.gL20
-        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
+        val maxPlayerCamDist = 300;
+        val npos = normalizedCamPos(camera.position.x, camera.position.x)
+        val ppos = Vector2(state.gameState.me.x, state.gameState.me.y)
+        val LEFT_DIST = 300f;
+        val RIGHT_DIST = 30f;
+        // println("dist = "  + (ppos.x - npos.x) )
+        if (ppos.x - npos.x > LEFT_DIST && npos.x < 3200f) {
+            camera.position.x = npos.x + 512f + (ppos.x - npos.x - LEFT_DIST)
+            //camera.position.y = ppos.y + 320f
+            camera.update()
+            tiledMapRenderer.setView(camera)
+            //  println(camera.position.x)
+        }
+
+        println("dist = " + (ppos.x - npos.x))
+
+        if (ppos.x - npos.x < RIGHT_DIST && npos.x > 0f) {
+            camera.position.x = npos.x + 512f + (ppos.x - npos.x - RIGHT_DIST)
+            camera.update()
+            tiledMapRenderer.setView(camera)
+            //  println(camera.position.x)
+        }
+
+        val scam = OrthographicCamera(1024f, 640f)
+        scam.position.x = camera.position.x
+        scam.position.y = camera.position.y
+        scam.update()
 
         fbo.begin()
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         sceneBatch.managed {
             //sceneBatch.draw(am.get(Assets.Names.BACKGROUND1, Texture::class.java),0f, 0f, 1024f, 640f)
             tiledMapRenderer.render()
+            stage.batch.projectionMatrix = scam.combined
             stage.batch.managed {
                 (state.gameState.players + state.gameState.me).forEach { p ->
                     val skin = pack.playerSkins[p.type] ?: return@forEach
@@ -128,6 +154,7 @@ class GameScreen(
                     if ((p.angle == 180f) xor texture.isFlipX) {
                         texture.flip(true, false)
                     }
+
                     it.draw(texture, p.x, p.y)
                 }
             }
@@ -135,6 +162,7 @@ class GameScreen(
         fbo.end()
 
         fboWall.begin()
+        shapeRender.projectionMatrix = scam.combined
         shapeRender.begin(ShapeRenderer.ShapeType.Filled)
         shapeRender.setColor(1f, 1f, 1f, 1f)
         shapeRender.rect(0f, 0f, 1024f, 640f)
@@ -189,7 +217,9 @@ class GameScreen(
         shader.setUniformi("u_textureCast", 1)
         shader.setUniformi("u_textureBack", 2)
         shader.setUniform2fv("screenSize", floatArrayOf(1024f, 640f), 0, 2)
-        shader.setUniform2fv("mousePos", floatArrayOf(Gdx.input.x.toFloat(), Gdx.input.y.toFloat()), 0, 2)
+        shader.setUniform2fv("mousePos",
+            floatArrayOf(state.gameState.me.x + 64f, 640f - state.gameState.me.y - 64f), 0, 2)
+            // TODO: recalculate player position to screen coordinates
         fboTex.texture.bind(0)
         fboBatch.draw(fboTex, 0f, 0f, 1024f, 640f)
         fboBatch.end();
