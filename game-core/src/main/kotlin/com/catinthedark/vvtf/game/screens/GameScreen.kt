@@ -94,7 +94,9 @@ class GameScreen(
         }
 
         Control.onPressed(Control.Button.BUTTON0, {
-            state.currentMovement.state = PlayerState.attack.name   //?
+            if (!state.gameState.me.canAttack) return@onPressed
+            log.info("ATTACK!")
+            state.gameState.me.canAttack = false
             EventBus.send("#handleKeys.attack", Const.tickInvoker, TCPMessage(Attack()))
         })
     }

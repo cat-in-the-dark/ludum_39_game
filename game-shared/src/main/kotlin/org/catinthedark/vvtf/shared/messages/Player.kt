@@ -15,7 +15,9 @@ data class Player(
         var state: String = Const.PlayerState.idle.name,
         var jumpingTime: Long = 0,
         var canJump: Boolean = false,
-        var lastY: Float = 0f
+        var lastY: Float = 0f,
+        var isJumping: Boolean = false,
+        var canAttack: Boolean = false
 )
 
 fun Vampire(id: String) = Player(
@@ -27,7 +29,8 @@ fun Vampire(id: String) = Player(
         x = 0f,
         y = 0f,
         canJump = true,
-        jumpingTime = 0
+        jumpingTime = 0,
+        canAttack = true
 )
 
 fun Peasant(id: String) = Player(
@@ -39,7 +42,8 @@ fun Peasant(id: String) = Player(
         x = 0f,
         y = 0f,
         canJump = false,
-        jumpingTime = 0
+        jumpingTime = 0,
+        canAttack = true
 )
 
 

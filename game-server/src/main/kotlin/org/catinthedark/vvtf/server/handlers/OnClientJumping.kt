@@ -17,14 +17,15 @@ fun onClientJumping(ev: Jump, id: String) {
         log.info("$id can't jump: $player, $params")
         return
     }
-    log.info("$ev $id")
 
+    player.isJumping = true
     player.jumpingTime = 0
     player.canJump = false
     player.state = PlayerState.jumping.name
     player.lastY = player.y // TODO: remove when add collisions
 
     Const.gameInvoker.defer({
+        player.isJumping = false
         player.canJump = true
         player.jumpingTime = 0
         log.info("Reset JUMP for $player")

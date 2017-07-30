@@ -6,11 +6,13 @@ import org.catinthedark.vvtf.shared.models.PlayerParams
 import org.catinthedark.vvtf.shared.toSeconds
 
 fun handleJumping(player: Player, params: PlayerParams, delta: Long) {
-    if (player.state != Const.PlayerState.jumping.name) return
+    if (!player.isJumping) return
+    player.state = Const.PlayerState.jumping.name
     player.jumpingTime += delta
 
     when {
         player.jumpingTime >= params.jumpTime -> {
+            player.isJumping = false
             player.state = Const.PlayerState.idle.name
             player.jumpingTime = 0
             player.y = player.lastY
@@ -18,7 +20,10 @@ fun handleJumping(player: Player, params: PlayerParams, delta: Long) {
 
         player.jumpingTime >= params.jumpTime / 2 -> {
             player.y -= params.jumpSpeed * delta.toSeconds()
-            if (player.y <= player.lastY) player.y = player.lastY // TODO: detect collisions
+            if (player.y <= player.lastY) {
+                player.y = player.lastY
+                player.isJumping = false
+            } // TODO: detect collisions
         }
 
         else -> {

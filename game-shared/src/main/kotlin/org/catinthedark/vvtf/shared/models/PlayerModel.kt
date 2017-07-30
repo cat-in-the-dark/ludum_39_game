@@ -8,7 +8,8 @@ data class PlayerParams(
         val canJump: Boolean,
         val jumpSpeed: Float,
         val jumpTime: Long,
-        val jumpCoolDown: Long
+        val jumpCoolDown: Long,
+        val attackCoolDown: Long
 )
 
 val playerParams = mapOf(
@@ -18,7 +19,8 @@ val playerParams = mapOf(
                 true,
                 1200f,
                 0.4f.toMillis(),
-                0.6f.toMillis()
+                0.6f.toMillis(),
+                1f.toMillis()
         ),
         "peasant" to PlayerParams(
                 600f,
@@ -26,6 +28,7 @@ val playerParams = mapOf(
                 false,
                 0f,
                 0f.toMillis(),
-                100000f.toMillis()
+                100000f.toMillis(),
+                1f.toMillis()
         )
 )
