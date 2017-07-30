@@ -21,6 +21,7 @@ class VVTFGame : Game() {
 
     override fun create() {
         createProduction()
+//        createTestUI()
     }
 
     fun createProduction() {

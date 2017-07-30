@@ -1,5 +1,6 @@
 package com.catinthedark.vvtf.game
 
+import com.badlogic.gdx.math.Vector2
 import org.catinthedark.client.TCPClient
 import org.catinthedark.shared.invokers.TickInvoker
 import org.catinthedark.shared.serialization.KryoCustomizer
@@ -20,5 +21,8 @@ object Const {
 
     object UI {
         val animationSpeed = 0.2f
+
+        val powerBarPos = Vector2(78f, 603f)
+        val powerBarWh = Vector2(252f, 25f)
     }
 }
