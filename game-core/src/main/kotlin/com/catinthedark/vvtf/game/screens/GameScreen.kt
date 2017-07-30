@@ -12,6 +12,7 @@ import org.catinthedark.shared.libgdx.managed
 import org.catinthedark.shared.route_machine.YieldUnit
 import org.catinthedark.vvtf.shared.Const.Network.Client
 import org.catinthedark.vvtf.shared.Const.PlayerState
+import org.catinthedark.vvtf.shared.messages.Attack
 import org.slf4j.LoggerFactory
 
 class GameScreen(
@@ -79,6 +80,7 @@ class GameScreen(
 
         Control.onPressed(Control.Button.BUTTON0, {
             state.currentMovement.state = PlayerState.attack.name
+            EventBus.send("#handleKeys.attack", Const.tickInvoker, TCPMessage(Attack()))
         })
     }
 }
