@@ -5,12 +5,10 @@ import org.catinthedark.shared.event_bus.EventBus
 import org.catinthedark.shared.event_bus.Handler
 import org.catinthedark.vvtf.server.Const
 import org.catinthedark.vvtf.server.messages.OnTick
-import org.catinthedark.vvtf.shared.Const.PlayerState
 import org.catinthedark.vvtf.shared.messages.GameState
 import org.catinthedark.vvtf.shared.messages.Player
 import org.catinthedark.vvtf.shared.models.PlayerParams
 import org.catinthedark.vvtf.shared.models.playerParams
-import org.catinthedark.vvtf.shared.toSeconds
 import org.slf4j.LoggerFactory
 
 private val log = LoggerFactory.getLogger("onTick")
@@ -38,4 +36,5 @@ private fun handlePlayer(player: Player, params: PlayerParams, delta: Long) {
     handleJumping(player, params, delta)
     handleMoving(player, params, delta)
     handleAttack(player, params, delta)
+    handlePowerLoss(player, params, delta)
 }

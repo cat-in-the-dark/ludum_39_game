@@ -20,6 +20,8 @@ import com.catinthedark.vvtf.game.Assets
 
 import com.catinthedark.vvtf.game.Const
 import com.catinthedark.vvtf.game.State
+import com.catinthedark.vvtf.game.screens.views.UINotifications
+import com.catinthedark.vvtf.game.screens.views.UIPower
 import com.catinthedark.vvtf.game.screens.views.UITime
 import org.catinthedark.client.TCPMessage
 import org.catinthedark.shared.event_bus.BusRegister
@@ -44,7 +46,7 @@ class GameScreen(
 
     private val log = LoggerFactory.getLogger(this.javaClass)
     private val state = State()
-    private val uiTime = UITime(hudStage, state)
+    private val ui = listOf(UITime(hudStage, state), UIPower(hudStage, state), UINotifications(hudStage, state))
     private lateinit var shader: ShaderProgram
     private lateinit var mesh: Mesh
     private lateinit var fbo: FrameBuffer
@@ -64,7 +66,7 @@ class GameScreen(
             return@registerPreHandler Pair(message, listOf(state, stage, pack))
         })
         pack = data
-        uiTime.onActivate(Unit)
+        ui.forEach { it.onActivate(Unit) }
 
         Const.tickInvoker.periodic({
             EventBus.send("#onActivate.periodic", Const.tickInvoker, TCPMessage(state.currentMovement))
@@ -162,7 +164,6 @@ class GameScreen(
                     it.draw(texture, p.x, p.y)
                 }
             }
-            uiTime.run(delta)
         }
         fbo.end()
 
@@ -227,6 +228,8 @@ class GameScreen(
         fboBatch.draw(fboTex, 0f, 0f, 1024f, 640f)
         fboBatch.end();
 
+        ui.forEach { it.run(delta) }
+
         handleKeys(delta)
 
         return null
@@ -236,7 +239,7 @@ class GameScreen(
         shader.dispose()
         mesh.dispose()
         BusRegister.unRegisterPreHandler("stage")
-        uiTime.onExit()
+        ui.forEach { it.onExit() }
     }
 
     private fun handleKeys(delta: Float) {

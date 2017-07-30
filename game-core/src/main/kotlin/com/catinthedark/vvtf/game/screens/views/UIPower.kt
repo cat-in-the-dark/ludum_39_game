@@ -28,7 +28,7 @@ class UIPower(
         shapeRender.transformMatrix = hudStage.batch.transformMatrix
         shapeRender.begin(ShapeRenderer.ShapeType.Filled)
         shapeRender.setColor(0.83f, 0.1f, 0.1f, 1f)
-        bar.render(shapeRender, target.power, params.maxPower, Const.UI.powerBarPos, Const.UI.powerBarWh)
+        bar.render(shapeRender, target.power.toLong(), params.maxPower.toLong(), Const.UI.powerBarPos, Const.UI.powerBarWh)
         shapeRender.end()
         return null
     }

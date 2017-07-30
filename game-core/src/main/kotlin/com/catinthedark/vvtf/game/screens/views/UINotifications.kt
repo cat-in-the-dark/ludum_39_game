@@ -3,45 +3,44 @@ package com.catinthedark.vvtf.game.screens.views
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.catinthedark.vvtf.game.Const
 import com.catinthedark.vvtf.game.State
 import org.catinthedark.shared.route_machine.YieldUnit
-import org.catinthedark.vvtf.shared.toSeconds
 
-class UITime(
-        private val hudStage: Stage,
-        private val state: State
+class UINotifications(
+    private val hudStage: Stage,
+    private val state: State
 ) : YieldUnit<Unit, Unit> {
     private val font = BitmapFont()
     private val label = Label(" ", Label.LabelStyle(font, Color.RED))
+    private val container = Container(label)
 
     override fun onActivate(data: Unit) {
-        label.x = Const.UI.timerPos.x
-        label.y = Const.UI.timerPos.y
         label.fontScaleX = 1.5f
         label.fontScaleY = 1.5f
-        hudStage.addActor(label)
+
+        container.left()
+        container.top()
+
+        container.x = Const.UI.notificationsPos.x
+        container.y = Const.UI.notificationsPos.y
+
+        hudStage.addActor(container)
     }
 
     override fun run(delta: Float): Unit? {
-        label.setText(formatTime(state.gameState.time))
+        val sb = StringBuilder()
+        state.notifications.forEach {
+            sb.append("${it.text}\n")
+        }
+        label.setText(sb)
 
         return null
     }
 
     override fun onExit() {
-        label.remove()
-    }
-
-    private fun formatTime(time: Long): String {
-        val seconds = time.toSeconds()
-        val min = (seconds / 60).toInt()
-        val sec = (seconds % 60).toInt()
-        return if (sec < 10) {
-            "$min:0$sec"
-        } else {
-            "$min:$sec"
-        }
+        container.remove()
     }
 }

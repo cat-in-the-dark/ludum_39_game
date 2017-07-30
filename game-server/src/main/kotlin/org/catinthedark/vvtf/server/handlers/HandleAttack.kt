@@ -23,16 +23,16 @@ fun handleAttack(player: Player, params: PlayerParams, delta: Long) {
             "vampire" -> vampireAttack(player, params, delta, target)
             "peasant" -> peasantAttack(player, params, delta, target)
         }
-        if (target.power == 0L) {
+        if (target.power == 0f) {
             target.state = Const.PlayerState.dead.name
-            log.info("{} dead", target.name)
+            log.info("'{}' dead", target.name)
         }
     }
 }
 
 private fun vampireAttack(vampire: Player, params: PlayerParams, delta: Long, victim: Player) {
     val powerTransfer = min(victim.power,
-            (vampire.power * params.attackPowerRatio * delta.toSeconds()).toLong())
+            vampire.power * params.attackPowerRatio * delta.toSeconds())
     vampire.power += powerTransfer
     victim.power -= powerTransfer
     log.info("Vampire '{}' bit '{}' for {}", vampire.name, victim.name, powerTransfer)
@@ -40,7 +40,7 @@ private fun vampireAttack(vampire: Player, params: PlayerParams, delta: Long, vi
 
 private fun peasantAttack(peasant: Player, params: PlayerParams, delta: Long, target: Player) {
     val powerTransfer = min(target.power,
-            (peasant.power * params.attackPowerRatio * delta.toSeconds()).toLong())
+            peasant.power * params.attackPowerRatio * delta.toSeconds())
     target.power -= powerTransfer
     log.info("Peasant '{}' pricked '{}' for {}", peasant.name, target.name, powerTransfer)
 }
