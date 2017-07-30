@@ -61,25 +61,37 @@ class GameScreen(
         val playerParams = Const.playerParams[state.gameState.me.type] ?: return
 
         Control.onPressed(Control.Button.RIGHT, {
-            state.currentMovement.deltaX += delta * playerParams.speedX
-            state.currentMovement.angle = 0f
+            with (state.currentMovement) {
+                deltaX += delta * playerParams.speedX
+                angle = 0f
+                state = PlayerState.walking.name    //?
+            }
+
         })
 
         Control.onPressed(Control.Button.LEFT, {
-            state.currentMovement.deltaX -= delta * playerParams.speedX
-            state.currentMovement.angle = 180f
+            with(state.currentMovement) {
+                deltaX -= delta * playerParams.speedX
+                angle = 180f
+                state = PlayerState.walking.name    //?
+            }
         })
 
         Control.onPressed(Control.Button.UP, {
-            state.currentMovement.deltaY += delta * playerParams.speedY
+            with(state.currentMovement) {
+                deltaY += delta * playerParams.speedY
+                state = PlayerState.jumping.name    //?
+            }
         })
 
         Control.onPressed(Control.Button.DOWN, {
-            state.currentMovement.deltaY -= delta * playerParams.speedY
+            with(state.currentMovement) {
+                deltaY -= delta * playerParams.speedY
+            }
         })
 
         Control.onPressed(Control.Button.BUTTON0, {
-            state.currentMovement.state = PlayerState.attack.name
+            state.currentMovement.state = PlayerState.attack.name   //?
             EventBus.send("#handleKeys.attack", Const.tickInvoker, TCPMessage(Attack()))
         })
     }
